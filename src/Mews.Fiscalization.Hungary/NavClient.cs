@@ -5,6 +5,8 @@ using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Mews.Fiscalization.Hungary.Dto;
+using ErrorResult = Mews.Fiscalization.Hungary.Models.ErrorResult;
 
 namespace Mews.Fiscalization.Hungary
 {
@@ -32,7 +34,7 @@ namespace Mews.Fiscalization.Hungary
 
         public async Task<ResponseResult<ExchangeToken>> GetExchangeTokenAsync()
         {
-            var request = CreateRequest<Dto.TokenExchangeRequest>();
+            var request = new Dto.TokenExchangeRequest(GetMetadata());
             var response = await SendRequestAsync("tokenExchange", request);
 
             if (response.IsSuccessStatusCode)
@@ -56,8 +58,7 @@ namespace Mews.Fiscalization.Hungary
 
         public async Task<ResponseResult<TaxPayerData>> GetTaxPayerDataAsync(string taxNumber)
         {
-            var request = CreateRequest<Dto.QueryTaxpayerRequest>();
-            request.TaxNumber = taxNumber;
+            var request = new Dto.QueryTaxpayerRequest(GetMetadata(), taxNumber);
 
             var response = await SendRequestAsync("queryTaxpayer", request);
             if (response.IsSuccessStatusCode)
@@ -80,52 +81,17 @@ namespace Mews.Fiscalization.Hungary
             }
         }
 
+        private RequestMetadata GetMetadata(string additionalSignatureData = null)
+        {
+            return new RequestMetadata(TechnicalUser, SoftwareIdentification, additionalSignatureData);
+        }
+
         private async Task<HttpResponseMessage> SendRequestAsync<TRequest>(string endpoint, TRequest request)
             where TRequest : class
         {
             var content = new StringContent(XmlManipulator.Serialize(request), Encoding.UTF8, "application/xml");
             var uri = new Uri(ServiceInfo.BaseUrls[Environment], $"{ServiceInfo.RelativeServiceUrl}{endpoint}");
             return await HttpClient.PostAsync(uri, content);
-        }
-
-        private TRequest CreateRequest<TRequest>(string additionalSignatureData = null)
-            where TRequest : Dto.Request, new()
-        {
-            var requestId = RequestId.CreateRandom();
-            var timestamp = DateTime.UtcNow;
-            return new TRequest
-            {
-                Header = new Dto.Header
-                {
-                    RequestId = requestId,
-                    TimeStamp = timestamp.ToString("yyyy-MM-ddTHH:mm:ssZ")
-                },
-                User = new Dto.User
-                {
-                    Login = TechnicalUser.Login,
-                    PasswordHash = TechnicalUser.PasswordHash,
-                    TaxNumber = TechnicalUser.TaxNumber,
-                    RequestSignature = GetRequestSignature(requestId, timestamp, additionalSignatureData)
-                },
-                Software = new Dto.Software
-                {
-                    Id = SoftwareIdentification.Id,
-                    Name = SoftwareIdentification.Name,
-                    Operation = SoftwareIdentification.Operation,
-                    MainVersion = SoftwareIdentification.MainVersion,
-                    DeveloperName = SoftwareIdentification.DeveloperName,
-                    DeveloperContact = SoftwareIdentification.DeveloperContact,
-                    DeveloperCountry = SoftwareIdentification.DeveloperCountry,
-                    DeveloperTaxNumber = SoftwareIdentification.DeveloperTaxNumber
-                }
-            };
-        }
-
-        private string GetRequestSignature(string requestId, DateTime timestamp, string additionalSignatureData = null)
-        {
-            var formattedTimestamp = timestamp.ToString("yyyyMMddHHmmss");
-            var signatureData = $"{requestId}{formattedTimestamp}{TechnicalUser.XmlSigningKey}{additionalSignatureData}";
-            return Sha512.GetSha3Hash(signatureData);
         }
     }
 }

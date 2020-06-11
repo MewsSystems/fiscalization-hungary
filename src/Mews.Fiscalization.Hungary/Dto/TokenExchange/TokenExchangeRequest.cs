@@ -2,5 +2,9 @@
 {
     public sealed class TokenExchangeRequest : Request
     {
+        public TokenExchangeRequest(RequestMetadata metadata)
+            : base(metadata)
+        {
+        }
     }
 }
