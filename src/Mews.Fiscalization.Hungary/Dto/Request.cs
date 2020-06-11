@@ -18,12 +18,12 @@ namespace Mews.Fiscalization.Hungary.Dto
         }
 
         [XmlElement("header")]
-        public Header Header { get; }
+        public Header Header { get; set; }
 
         [XmlElement("user")]
-        public User User { get; }
+        public User User { get; set; }
 
         [XmlElement("software")]
-        public Software Software { get; }
+        public Software Software { get; set; }
     }
 }

@@ -15,6 +15,6 @@ namespace Mews.Fiscalization.Hungary.Dto
         }
 
         [XmlElement("taxNumber")]
-        public string TaxNumber { get; }
+        public string TaxNumber { get; set; }
     }
 }
