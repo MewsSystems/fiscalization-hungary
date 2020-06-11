@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Mews.Fiscalization.Hungary
 {
-    public static class Sha512
+    internal static class Sha512
     {
-        public static string GetHash(string input)
+        internal static string GetHash(string input)
         {
             using (var sha = SHA512.Create())
             {
@@ -17,7 +17,7 @@ namespace Mews.Fiscalization.Hungary
             }
         }
 
-        public static string GetSha3Hash(string input)
+        internal static string GetSha3Hash(string input)
         {
             var hashAlgorithm = new Org.BouncyCastle.Crypto.Digests.Sha3Digest(512);
             var bytes = Encoding.ASCII.GetBytes(input);

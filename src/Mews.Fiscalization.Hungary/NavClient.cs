@@ -32,7 +32,7 @@ namespace Mews.Fiscalization.Hungary
 
         public async Task<ResponseResult<ExchangeToken>> GetExchangeTokenAsync()
         {
-            var request = CreateRequest<Dto.TokenExchangeRequest>();
+            var request = new Dto.TokenExchangeRequest(GetMetadata());
             return await ProcessRequestAsync<Dto.TokenExchangeRequest, Dto.TokenExchangeResponse, ExchangeToken>("tokenExchange", request, response =>
             {
                 var tokenBase64 = response.EncodedExchangeToken;
@@ -48,8 +48,7 @@ namespace Mews.Fiscalization.Hungary
 
         public async Task<ResponseResult<TaxPayerData>> GetTaxPayerDataAsync(string taxNumber)
         {
-            var request = CreateRequest<Dto.QueryTaxpayerRequest>();
-            request.TaxNumber = taxNumber;
+            var request = new Dto.QueryTaxpayerRequest(GetMetadata(), taxNumber);
             return await ProcessRequestAsync<Dto.QueryTaxpayerRequest, Dto.QueryTaxpayerResponse, TaxPayerData>("queryTaxpayer", request, response =>
             {
                 if (response.IsValidTaxPayer)
@@ -63,44 +62,9 @@ namespace Mews.Fiscalization.Hungary
             });
         }
 
-        private TRequest CreateRequest<TRequest>(string additionalSignatureData = null)
-            where TRequest : Dto.Request, new()
+        private Dto.RequestMetadata GetMetadata(string additionalSignatureData = null)
         {
-            var requestId = RequestId.CreateRandom();
-            var timestamp = DateTime.UtcNow;
-            return new TRequest
-            {
-                Header = new Dto.Header
-                {
-                    RequestId = requestId,
-                    TimeStamp = timestamp.ToString("yyyy-MM-ddTHH:mm:ssZ")
-                },
-                User = new Dto.User
-                {
-                    Login = TechnicalUser.Login,
-                    PasswordHash = TechnicalUser.PasswordHash,
-                    TaxNumber = TechnicalUser.TaxNumber,
-                    RequestSignature = GetRequestSignature(requestId, timestamp, additionalSignatureData)
-                },
-                Software = new Dto.Software
-                {
-                    Id = SoftwareIdentification.Id,
-                    Name = SoftwareIdentification.Name,
-                    Operation = SoftwareIdentification.Operation,
-                    MainVersion = SoftwareIdentification.MainVersion,
-                    DeveloperName = SoftwareIdentification.DeveloperName,
-                    DeveloperContact = SoftwareIdentification.DeveloperContact,
-                    DeveloperCountry = SoftwareIdentification.DeveloperCountry,
-                    DeveloperTaxNumber = SoftwareIdentification.DeveloperTaxNumber
-                }
-            };
-        }
-
-        private string GetRequestSignature(string requestId, DateTime timestamp, string additionalSignatureData = null)
-        {
-            var formattedTimestamp = timestamp.ToString("yyyyMMddHHmmss");
-            var signatureData = $"{requestId}{formattedTimestamp}{TechnicalUser.XmlSigningKey}{additionalSignatureData}";
-            return Sha512.GetSha3Hash(signatureData);
+            return new Dto.RequestMetadata(TechnicalUser, SoftwareIdentification, additionalSignatureData);
         }
 
         private async Task<ResponseResult<TResult>> ProcessRequestAsync<TRequest, TDto, TResult>(string endpoint, TRequest request, Func<TDto, ResponseResult<TResult>> successFunc)
