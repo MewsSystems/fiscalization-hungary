@@ -4,6 +4,10 @@ namespace Mews.Fiscalization.Hungary.Dto
 {
     public sealed class QueryTaxpayerRequest : Request
     {
+        public QueryTaxpayerRequest()
+        {
+        }
+
         public QueryTaxpayerRequest(RequestMetadata metadata, string taxNumber)
             : base(metadata)
         {

@@ -6,6 +6,10 @@ namespace Mews.Fiscalization.Hungary.Dto
     [Serializable]
     public abstract class Request
     {
+        public Request()
+        {
+        }
+
         public Request(RequestMetadata metadata)
         {
             Header = metadata.Header;
