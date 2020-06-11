@@ -33,59 +33,34 @@ namespace Mews.Fiscalization.Hungary
         public async Task<ResponseResult<ExchangeToken>> GetExchangeTokenAsync()
         {
             var request = CreateRequest<Dto.TokenExchangeRequest>();
-            var response = await SendRequestAsync("tokenExchange", request);
-
-            if (response.IsSuccessStatusCode)
+            return await ProcessRequestAsync<Dto.TokenExchangeRequest, Dto.TokenExchangeResponse, ExchangeToken>("tokenExchange", request, response =>
             {
-                var successResult = XmlManipulator.Deserialize<Dto.TokenExchangeResponse>(await response.Content.ReadAsStringAsync());
-                var tokenBase64 = successResult.EncodedExchangeToken;
+                var tokenBase64 = response.EncodedExchangeToken;
                 var tokenData = Convert.FromBase64String(tokenBase64);
                 var decryptedToken = Aes.Decrypt(TechnicalUser.EncryptionKey, tokenData);
                 return new ResponseResult<ExchangeToken>(successResult: new ExchangeToken(
                     value: decryptedToken,
-                    validFrom: successResult.TokenValidityFrom,
-                    validTo: successResult.TokenValidityTo
+                    validFrom: response.TokenValidityFrom,
+                    validTo: response.TokenValidityTo
                 ));
-            }
-            else
-            {
-                var errorResult = XmlManipulator.Deserialize<Dto.GeneralErrorResponse>(await response.Content.ReadAsStringAsync());
-                return new ResponseResult<ExchangeToken>(errorResult: ErrorResult.Map(errorResult));
-            }
+            });
         }
 
         public async Task<ResponseResult<TaxPayerData>> GetTaxPayerDataAsync(string taxNumber)
         {
             var request = CreateRequest<Dto.QueryTaxpayerRequest>();
             request.TaxNumber = taxNumber;
-
-            var response = await SendRequestAsync("queryTaxpayer", request);
-            if (response.IsSuccessStatusCode)
+            return await ProcessRequestAsync<Dto.QueryTaxpayerRequest, Dto.QueryTaxpayerResponse, TaxPayerData>("queryTaxpayer", request, response =>
             {
-                var successResult = XmlManipulator.Deserialize<Dto.QueryTaxpayerResponse>(await response.Content.ReadAsStringAsync());
-                
-                if (successResult.IsValidTaxPayer)
+                if (response.IsValidTaxPayer)
                 {
-                    return new ResponseResult<TaxPayerData>(successResult: TaxPayerData.Map(successResult));
+                    return new ResponseResult<TaxPayerData>(successResult: TaxPayerData.Map(response));
                 }
                 else
                 {
                     return new ResponseResult<TaxPayerData>(errorResult: new ErrorResult("Invalid tax payer.", ResultErrorCode.InvalidTaxPayer));
                 }
-            }
-            else
-            {
-                var errorResult = XmlManipulator.Deserialize<Dto.GeneralErrorResponse>(await response.Content.ReadAsStringAsync());
-                return new ResponseResult<TaxPayerData>(errorResult: ErrorResult.Map(errorResult));
-            }
-        }
-
-        private async Task<HttpResponseMessage> SendRequestAsync<TRequest>(string endpoint, TRequest request)
-            where TRequest : class
-        {
-            var content = new StringContent(XmlManipulator.Serialize(request), Encoding.UTF8, "application/xml");
-            var uri = new Uri(ServiceInfo.BaseUrls[Environment], $"{ServiceInfo.RelativeServiceUrl}{endpoint}");
-            return await HttpClient.PostAsync(uri, content);
+            });
         }
 
         private TRequest CreateRequest<TRequest>(string additionalSignatureData = null)
@@ -126,6 +101,39 @@ namespace Mews.Fiscalization.Hungary
             var formattedTimestamp = timestamp.ToString("yyyyMMddHHmmss");
             var signatureData = $"{requestId}{formattedTimestamp}{TechnicalUser.XmlSigningKey}{additionalSignatureData}";
             return Sha512.GetSha3Hash(signatureData);
+        }
+
+        private async Task<ResponseResult<TResult>> ProcessRequestAsync<TRequest, TDto, TResult>(string endpoint, TRequest request, Func<TDto, ResponseResult<TResult>> successFunc)
+            where TRequest : class
+            where TDto : class
+            where TResult : class
+        {
+            var httpResponse = await SendRequestAsync(endpoint, request);
+            return await DeserializeAsync(httpResponse, successFunc);
+        }
+
+        private async Task<HttpResponseMessage> SendRequestAsync<TRequest>(string endpoint, TRequest request)
+            where TRequest : class
+        {
+            var content = new StringContent(XmlManipulator.Serialize(request), Encoding.UTF8, "application/xml");
+            var uri = new Uri(ServiceInfo.BaseUrls[Environment], $"{ServiceInfo.RelativeServiceUrl}{endpoint}");
+            return await HttpClient.PostAsync(uri, content);
+        }
+
+        private async Task<ResponseResult<TResult>> DeserializeAsync<TDto, TResult>(HttpResponseMessage response, Func<TDto, ResponseResult<TResult>> successFunc)
+            where TDto : class
+            where TResult : class
+        {
+            var content = await response.Content.ReadAsStringAsync();
+            if (response.IsSuccessStatusCode)
+            {
+                return successFunc(XmlManipulator.Deserialize<TDto>(content));
+            }
+            else
+            {
+                var errorResult = XmlManipulator.Deserialize<Dto.GeneralErrorResponse>(content);
+                return new ResponseResult<TResult>(errorResult: ErrorResult.Map(errorResult));
+            }
         }
     }
 }
