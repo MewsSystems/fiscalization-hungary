@@ -5,8 +5,6 @@ using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Mews.Fiscalization.Hungary.Dto;
-using ErrorResult = Mews.Fiscalization.Hungary.Models.ErrorResult;
 
 namespace Mews.Fiscalization.Hungary
 {
@@ -81,9 +79,9 @@ namespace Mews.Fiscalization.Hungary
             }
         }
 
-        private RequestMetadata GetMetadata(string additionalSignatureData = null)
+        private Dto.RequestMetadata GetMetadata(string additionalSignatureData = null)
         {
-            return new RequestMetadata(TechnicalUser, SoftwareIdentification, additionalSignatureData);
+            return new Dto.RequestMetadata(TechnicalUser, SoftwareIdentification, additionalSignatureData);
         }
 
         private async Task<HttpResponseMessage> SendRequestAsync<TRequest>(string endpoint, TRequest request)
