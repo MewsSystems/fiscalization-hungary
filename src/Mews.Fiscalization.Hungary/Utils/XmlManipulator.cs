@@ -2,7 +2,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Mews.Fiscalization.Hungary
+namespace Mews.Fiscalization.Hungary.Utils
 {
     public static class XmlManipulator
     {

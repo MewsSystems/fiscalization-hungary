@@ -9,7 +9,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mews.Fiscalization.Hungary
+namespace Mews.Fiscalization.Hungary.Utils
 {
     internal class Client
     {
