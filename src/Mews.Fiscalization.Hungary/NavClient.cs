@@ -5,6 +5,7 @@ using System;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Mews.Fiscalization.Hungary.Dto;
 
 namespace Mews.Fiscalization.Hungary
 {
@@ -71,7 +72,9 @@ namespace Mews.Fiscalization.Hungary
                 header = new Dto.BasicHeaderType
                 {
                     requestId = requestId,
-                    timestamp = timestamp
+                    timestamp = timestamp,
+                    requestVersion = RequestVersionType.Item20,
+                    headerVersion = HeaderVersionType.Item10
                 },
                 user = new Dto.UserHeaderType
                 {
