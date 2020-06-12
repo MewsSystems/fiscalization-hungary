@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+
 namespace Mews.Fiscalization.Hungary.Models
 {
     public class SupplierTaxNumber
@@ -190,7 +193,7 @@ namespace Mews.Fiscalization.Hungary.Models
     public class InvoiceData
     {
         public string InvoiceNumber { get; set; }
-        public string InvoiceIssueDate { get; set; }
+        public DateTime InvoiceIssueDate { get; set; }
         public InvoiceMain InvoiceMain { get; set; }
         public string SchemaLocation { get; set; }
     }

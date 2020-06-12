@@ -2,10 +2,12 @@
 using Mews.Fiscalization.Hungary.Models.TaxPayer;
 using Mews.Fiscalization.Hungary.Utils;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Mews.Fiscalization.Hungary.Dto;
 
 namespace Mews.Fiscalization.Hungary
 {
@@ -29,6 +31,56 @@ namespace Mews.Fiscalization.Hungary
             TechnicalUser = technicalUser;
             SoftwareIdentification = softwareIdentification;
             Environment = environment;
+        }
+
+        public async Task<ResponseResult<string>> SendInvoicesAsync(ExchangeToken token, IEnumerable<InvoiceData> invoices)
+        {
+            // TODO: Handle additionalSignatureData
+            var request = CreateRequest<Dto.ManageInvoiceRequest>();
+            request.exchangeToken = Convert.ToBase64String(token.Value);
+            request.invoiceOperations = new Dto.InvoiceOperationListType
+            {
+                compressedContent = false,
+                invoiceOperation = MapToInvoiceOperation(invoices).ToArray()
+            };
+
+            return await ProcessRequestAsync<Dto.ManageInvoiceRequest, Dto.ManageInvoiceResponse, string>("manageInvoice", request, response =>
+            {
+                return new ResponseResult<string>(successResult: response.transactionId);
+            });
+        }
+
+        private IEnumerable<Dto.InvoiceOperationType> MapToInvoiceOperation(IEnumerable<InvoiceData> invoices)
+        {
+            var operations = new List<Dto.InvoiceOperationType>();
+            for (int i = 1; i <= invoices.Count(); ++i)
+            {
+                var invoice = invoices.ElementAt(i);
+                operations.Add(new Dto.InvoiceOperationType
+                {
+                    index = i,
+                    invoiceData = Encoding.UTF8.GetBytes(MapInvoiceData(invoice).ToString()), // TODO: invoice data serialized and then converted to base64.
+                    invoiceOperation = Dto.ManageInvoiceOperationType.CREATE // For now, we will only support create operations.
+                });
+            }
+
+            return operations;
+        }
+
+        private Dto.InvoiceData MapInvoiceData(InvoiceData invoice)
+        {
+            return new Dto.InvoiceData
+            {
+                invoiceIssueDate = invoice.InvoiceIssueDate,
+                invoiceMain = new Dto.InvoiceMainType
+                {
+                    Items = new object[]
+                    {
+                        // TODO: fill in with Invoice items.
+                    }
+                },
+                invoiceNumber = invoice.InvoiceNumber
+            };
         }
 
         public async Task<ResponseResult<ExchangeToken>> GetExchangeTokenAsync()
@@ -73,8 +125,8 @@ namespace Mews.Fiscalization.Hungary
                 {
                     requestId = requestId,
                     timestamp = timestamp.ToString("yyyy-MM-ddTHH:mm:ssZ"),
-                    requestVersion = RequestVersionType.Item20,
-                    headerVersion = HeaderVersionType.Item10
+                    requestVersion = Dto.RequestVersionType.Item20,
+                    headerVersion = Dto.HeaderVersionType.Item10
                 },
                 user = new Dto.UserHeaderType
                 {
