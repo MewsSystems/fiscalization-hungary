@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 
 namespace Mews.Fiscalization.Hungary.Models
 {
@@ -105,7 +104,7 @@ namespace Mews.Fiscalization.Hungary.Models
     {
         public string LineNumber { get; set; }
         public ProductCodes ProductCodes { get; set; }
-        public string LineExpressionIndicator { get; set; }
+        public bool LineExpressionIndicator { get; set; }
         public string LineNatureIndicator { get; set; }
         public string LineDescription { get; set; }
         public string Quantity { get; set; }
@@ -196,6 +195,108 @@ namespace Mews.Fiscalization.Hungary.Models
         public DateTime InvoiceIssueDate { get; set; }
         public InvoiceMain InvoiceMain { get; set; }
         public string SchemaLocation { get; set; }
-    }
 
+
+        // Redesign InvoiceData into Invoice with only useful data, and use it instead of the hard-coded values.
+        internal static Dto.InvoiceData Map(InvoiceData invoice)
+        {
+            return new Dto.InvoiceData
+            {
+                invoiceIssueDate = new DateTime(2020, 05, 15),
+                invoiceMain = new Dto.InvoiceMainType
+                {
+                    Items = new object[]
+                    {
+                        new Dto.InvoiceType
+                        {
+                            invoiceHead = new Dto.InvoiceHeadType
+                            {
+                                invoiceDetail = new Dto.InvoiceDetailType
+                                {
+                                    currencyCode = "HUF",
+                                    exchangeRate = 2.0m,
+                                    invoiceAppearance = Dto.InvoiceAppearanceType.PAPER,
+                                    invoiceCategory = Dto.InvoiceCategoryType.NORMAL,
+                                    invoiceDeliveryDate = new DateTime(2020, 05, 10),
+                                    paymentDate = new DateTime(2020, 05, 30)
+                                },
+                                supplierInfo = new Dto.SupplierInfoType
+                                {
+                                    supplierAddress = new Dto.AddressType
+                                    {
+                                        Item = new Dto.SimpleAddressType
+                                        {
+                                            additionalAddressDetail = "",
+                                            city = "Budapest",
+                                            countryCode = "HU",
+                                            postalCode = "1111",
+                                            region = "Példa"
+                                        }
+                                    },
+                                    supplierName = "Szállító Kft",
+                                    supplierTaxNumber = new Dto.TaxNumberType
+                                    {
+                                        taxpayerId = "11111111",
+                                        vatCode = "2"
+                                    }
+                                }
+                            },
+                            invoiceLines = new Dto.LineType[]
+                            {
+                                new Dto.LineType
+                                {
+                                    Item = new Dto.LineAmountsSimplifiedType
+                                    {
+                                        lineGrossAmountSimplified = 2.0m,
+                                        lineGrossAmountSimplifiedHUF = 2.0m,
+                                        lineVatContent = 2.0m,
+                                        lineVatContentSpecified = true
+                                    },
+                                    lineDescription = "Hűtött házi sertés (fél)",
+                                    lineDiscountData = new Dto.DiscountDataType
+                                    {
+                                        discountDescription = "LineDiscountData",
+                                        discountValue = 480000.00m
+                                    },
+                                    lineExpressionIndicator = true,
+                                    lineNatureIndicator = Dto.LineNatureIndicatorType.OTHER,
+                                    lineNumber = "1",
+                                    productCodes = new Dto.ProductCodeType[]
+                                    {
+                                        new Dto.ProductCodeType
+                                        {
+                                            productCodeCategory = Dto.ProductCodeCategoryType.VTSZ,
+                                            ItemElementName = Dto.ItemChoiceType.productCodeValue,
+                                            Item = "02031110",
+                                        }
+                                    },
+                                    quantity = 1500.00m,
+                                    unitOfMeasure = Dto.UnitOfMeasureType.KILOGRAM,
+                                    unitPrice = 400.00m
+                                }
+                            },
+                            invoiceSummary = new Dto.SummaryType
+                            {
+                                summaryGrossData = new Dto.SummaryGrossDataType
+                                {
+                                    invoiceGrossAmount = 6157040.00m,
+                                    invoiceGrossAmountHUF = 6157040.00m
+                                },
+                                Items = new Dto.SummarySimplifiedType[]
+                                {
+                                    new Dto.SummarySimplifiedType
+                                    {
+                                        vatContent = 0.5m,
+                                        vatContentGrossAmount = 6000m,
+                                        vatContentGrossAmountHUF = 60000m
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                invoiceNumber = "2020/000123"
+            };
+        }
+    }
 }

@@ -21,39 +21,29 @@ namespace Mews.Fiscalization.Hungary
             return request;
         }
 
-        internal static Dto.ManageInvoiceRequest CreateManageInvoicesRequest(TechnicalUser user, SoftwareIdentification software, ExchangeToken token, IEnumerable<InvoiceData> invoices)
+        internal static Dto.ManageInvoiceRequest CreateManageInvoicesRequest(TechnicalUser user, SoftwareIdentification software, ExchangeToken token, IEnumerable<InvoiceData> invoiceData)
         {
-            // TODO: Handle additionalSignatureData
-            var request = CreateRequest<Dto.ManageInvoiceRequest>(user, software);
-
-
-            var invoiceOperations = invoices.Select((invoice, i) =>
+            var operationTypes = new List<Dto.InvoiceOperationType>();
+            for (int i = 0; i < invoiceData.Count(); ++i)
             {
-                var invoiceData = new Dto.InvoiceData
-                {
-                    invoiceNumber = invoice.InvoiceNumber,
-                    invoiceIssueDate = invoice.InvoiceIssueDate,
-                    invoiceMain = new Dto.InvoiceMainType
-                    {
-                        Items = new object[]
-                        {
-                            // TODO: fill in with Invoice items.
-                        }
-                    }
-                };
-                return new Dto.InvoiceOperationType
+                var invoice = invoiceData.ElementAt(i);
+                operationTypes.Add(new Dto.InvoiceOperationType
                 {
                     index = i + 1,
-                    invoiceData = Encoding.UTF8.GetBytes(invoiceData.ToString()), // TODO: invoice data serialized and then converted to base64.
-                    invoiceOperation = Dto.ManageInvoiceOperationType.CREATE // For now, we will only support create operations.
-                };
-            });
+                    invoiceData = Encoding.UTF8.GetBytes(XmlManipulator.Serialize(InvoiceData.Map(invoice))),
+                    invoiceOperation = Dto.ManageInvoiceOperationType.CREATE
+                });
+            }
 
-            request.exchangeToken = Convert.ToBase64String(token.Value);
+            var additionalSignatureData = operationTypes.Select(t => $"{t.invoiceOperation}{Convert.ToBase64String(t.invoiceData)}");
+            var encodedAddtionalSignatureData = Sha512.GetSha3Hash(string.Join("", additionalSignatureData));
+
+            var request = CreateRequest<Dto.ManageInvoiceRequest>(user, software, encodedAddtionalSignatureData);
+            request.exchangeToken = Encoding.UTF8.GetString(token.Value);
             request.invoiceOperations = new Dto.InvoiceOperationListType
             {
                 compressedContent = false,
-                invoiceOperation = invoiceOperations.ToArray()
+                invoiceOperation = operationTypes.ToArray()
             };
 
             return request;
