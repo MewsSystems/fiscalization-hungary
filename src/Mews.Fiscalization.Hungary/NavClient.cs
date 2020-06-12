@@ -72,7 +72,7 @@ namespace Mews.Fiscalization.Hungary
                 header = new Dto.BasicHeaderType
                 {
                     requestId = requestId,
-                    timestamp = timestamp,
+                    timestamp = timestamp.ToString("yyyy-MM-ddTHH:mm:ssZ"),
                     requestVersion = RequestVersionType.Item20,
                     headerVersion = HeaderVersionType.Item10
                 },

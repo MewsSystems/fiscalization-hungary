@@ -1161,15 +1161,7 @@
             }
         }
 
-        /// <remarks/>
-        public System.DateTime timestamp {
-            get {
-                return this.timestampField;
-            }
-            set {
-                this.timestampField = value;
-            }
-        }
+        public string timestamp { get; set; }
 
         /// <remarks/>
         public RequestVersionType requestVersion {
