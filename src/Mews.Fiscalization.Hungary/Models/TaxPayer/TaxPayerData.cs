@@ -1,16 +1,16 @@
 ﻿using System;
+using System.Linq;
 
 namespace Mews.Fiscalization.Hungary.Models.TaxPayer
 {
     public sealed class TaxPayerData
     {
-        internal TaxPayerData(string id, string name, Address address, string vatCode, bool isValid, DateTime? infoDate = null)
+        internal TaxPayerData(string id, string name, Address address, string vatCode, DateTime? infoDate = null)
         {
             Id = id;
             Name = name;
             Address = address;
             VatCode = vatCode;
-            IsValid = isValid;
             InfoDate = infoDate;
         }
 
@@ -22,22 +22,20 @@ namespace Mews.Fiscalization.Hungary.Models.TaxPayer
 
         public string VatCode { get; }
 
-        public bool IsValid { get; }
 
         public DateTime? InfoDate { get; }
 
         internal static TaxPayerData Map(Dto.QueryTaxpayerResponse response)
         {
-            var addressItem = response.TaxpayerData.TaxpayerAddressList.TaxpayerAddressItem;
-            var taxPayerData = response.TaxpayerData;
-            var taxNumberDetail = taxPayerData.TaxNumberDetail;
+            var addressItem = response.taxpayerData.taxpayerAddressList.First();
+            var taxPayerData = response.taxpayerData;
+            var taxNumberDetail = taxPayerData.taxNumberDetail;
             return new TaxPayerData(
-                id: taxNumberDetail.TaxpayerId,
-                name: taxPayerData.TaxpayerName,
+                id: taxNumberDetail.taxpayerId,
+                name: taxPayerData.taxpayerName,
                 address: Address.Map(addressItem),
-                vatCode: taxNumberDetail.VatCode,
-                isValid: response.IsValidTaxPayer,
-                infoDate: response.InfoDate
+                vatCode: taxNumberDetail.vatCode,
+                infoDate: response.infoDate
             );
         }
     }

@@ -32,26 +32,25 @@ namespace Mews.Fiscalization.Hungary
 
         public async Task<ResponseResult<ExchangeToken>> GetExchangeTokenAsync()
         {
-            var request = new Dto.TokenExchangeRequest(GetMetadata());
+            var request = CreateRequest<Dto.TokenExchangeRequest>();
             return await ProcessRequestAsync<Dto.TokenExchangeRequest, Dto.TokenExchangeResponse, ExchangeToken>("tokenExchange", request, response =>
             {
-                var tokenBase64 = response.EncodedExchangeToken;
-                var tokenData = Convert.FromBase64String(tokenBase64);
-                var decryptedToken = Aes.Decrypt(TechnicalUser.EncryptionKey, tokenData);
+                var decryptedToken = Aes.Decrypt(TechnicalUser.EncryptionKey, response.encodedExchangeToken);
                 return new ResponseResult<ExchangeToken>(successResult: new ExchangeToken(
                     value: decryptedToken,
-                    validFrom: response.TokenValidityFrom,
-                    validTo: response.TokenValidityTo
+                    validFrom: response.tokenValidityFrom,
+                    validTo: response.tokenValidityTo
                 ));
             });
         }
 
         public async Task<ResponseResult<TaxPayerData>> GetTaxPayerDataAsync(string taxNumber)
         {
-            var request = new Dto.QueryTaxpayerRequest(GetMetadata(), taxNumber);
+            var request = CreateRequest<Dto.QueryTaxpayerRequest>();
+            request.taxNumber = taxNumber;
             return await ProcessRequestAsync<Dto.QueryTaxpayerRequest, Dto.QueryTaxpayerResponse, TaxPayerData>("queryTaxpayer", request, response =>
             {
-                if (response.IsValidTaxPayer)
+                if (response.taxpayerValidity) // TODO - it's nullable
                 {
                     return new ResponseResult<TaxPayerData>(successResult: TaxPayerData.Map(response));
                 }
@@ -62,9 +61,44 @@ namespace Mews.Fiscalization.Hungary
             });
         }
 
-        private Dto.RequestMetadata GetMetadata(string additionalSignatureData = null)
+        private T CreateRequest<T>(string additionalSignatureData = null)
+            where T : Dto.BasicRequestType, new()
         {
-            return new Dto.RequestMetadata(TechnicalUser, SoftwareIdentification, additionalSignatureData);
+            var requestId = RequestId.CreateRandom();
+            var timestamp = DateTime.UtcNow;
+            return new T
+            {
+                header = new Dto.BasicHeaderType
+                {
+                    requestId = requestId,
+                    timestamp = timestamp
+                },
+                user = new Dto.UserHeaderType
+                {
+                    login = TechnicalUser.Login,
+                    passwordHash = TechnicalUser.PasswordHash,
+                    taxNumber = TechnicalUser.TaxNumber,
+                    requestSignature = GetRequestSignature(TechnicalUser, requestId, timestamp, additionalSignatureData)
+                },
+                software = new Dto.SoftwareType
+                {
+                    softwareId = SoftwareIdentification.Id,
+                    softwareName = SoftwareIdentification.Name,
+                    softwareOperation = (Dto.SoftwareOperationType)SoftwareIdentification.Type,
+                    softwareMainVersion = SoftwareIdentification.MainVersion,
+                    softwareDevName = SoftwareIdentification.DeveloperName,
+                    softwareDevContact = SoftwareIdentification.DeveloperContact,
+                    softwareDevCountryCode = SoftwareIdentification.DeveloperCountry,
+                    softwareDevTaxNumber = SoftwareIdentification.DeveloperTaxNumber
+                }
+            };
+        }
+
+        private string GetRequestSignature(TechnicalUser user, string requestId, DateTime timestamp, string additionalSignatureData = null)
+        {
+            var formattedTimestamp = timestamp.ToString("yyyyMMddHHmmss");
+            var signatureData = $"{requestId}{formattedTimestamp}{user.XmlSigningKey}{additionalSignatureData}";
+            return Sha512.GetSha3Hash(signatureData);
         }
 
         private async Task<ResponseResult<TResult>> ProcessRequestAsync<TRequest, TDto, TResult>(string endpoint, TRequest request, Func<TDto, ResponseResult<TResult>> successFunc)

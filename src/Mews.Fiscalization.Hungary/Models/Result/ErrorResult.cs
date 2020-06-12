@@ -17,20 +17,20 @@ namespace Mews.Fiscalization.Hungary.Models
         internal static ErrorResult Map(Dto.GeneralErrorResponse response)
         {
             return new ErrorResult(
-                message: response.Result.Message,
-                errorCode: MapErrorCode(response.Result.ErrorCode)
+                message: response.result.message,
+                errorCode: MapErrorCode(response.result.errorCode)
             );
         }
 
-        internal static ResultErrorCode MapErrorCode(Dto.ErrorCode errorCode)
+        internal static ResultErrorCode MapErrorCode(string errorCode)
         {
             switch (errorCode)
             {
-                case Dto.ErrorCode.INVALID_SECURITY_USER:
-                case Dto.ErrorCode.NOT_REGISTERED_CUSTOMER:
-                case Dto.ErrorCode.INVALID_CUSTOMER:
+                case "INVALID_SECURITY_USER":
+                case "NOT_REGISTERED_CUSTOMER":
+                case "INVALID_CUSTOMER":
                     return ResultErrorCode.InvalidCredentials;
-                case Dto.ErrorCode.MAINTENANCE_MODE:
+                case "MAINTENANCE_MODE":
                     return ResultErrorCode.MaintenanceMode;
                 default:
                     throw new NotImplementedException($"Error code: {errorCode} is not implemented.");
