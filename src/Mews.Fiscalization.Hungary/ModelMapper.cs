@@ -66,7 +66,7 @@ namespace Mews.Fiscalization.Hungary
             });
         }
 
-        internal static Dto.InvoiceData Map(Invoice invoice)
+        internal static Dto.InvoiceData MapInvoiceData(Invoice invoice)
         {
             var companyInfo = invoice.CompanyInfo;
             var customerInfo = invoice.CustomerInfo;

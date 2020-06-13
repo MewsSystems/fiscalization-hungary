@@ -30,7 +30,7 @@ namespace Mews.Fiscalization.Hungary
                 operationTypes.Add(new Dto.InvoiceOperationType
                 {
                     index = i + 1,
-                    invoiceData = Encoding.UTF8.GetBytes(XmlManipulator.Serialize(Invoice.Map(invoice))),
+                    invoiceData = Encoding.UTF8.GetBytes(XmlManipulator.Serialize(ModelMapper.MapInvoiceData(invoice))),
                     invoiceOperation = Dto.ManageInvoiceOperationType.CREATE
                 });
             }
