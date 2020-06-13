@@ -1,4 +1,7 @@
-﻿namespace Mews.Fiscalization.Hungary.Models
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace Mews.Fiscalization.Hungary.Models
 {
     public class Item
     {
@@ -49,5 +52,36 @@
         public string DiscountDescription { get; }
 
         public decimal DiscountValue { get; }
+
+        internal static IEnumerable<Dto.LineType> Map(IEnumerable<Item> items)
+        {
+            return items.Select(i => new Dto.LineType
+            {
+                lineNumber = i.Number,
+                lineDescription = i.Description,
+                lineExpressionIndicator = false,
+                quantity = i.Quantity,
+                unitPrice = i.UnitPrice,
+                Item = new Dto.LineAmountsSimplifiedType
+                {
+                    lineGrossAmountSimplified = i.GrossAmount,
+                    lineGrossAmountSimplifiedHUF = i.GrossAmountHUF
+                },
+                lineDiscountData = new Dto.DiscountDataType
+                {
+                    discountDescription = i.DiscountDescription,
+                    discountValue = i.DiscountValue
+                },
+                productCodes = new Dto.ProductCodeType[]
+                {
+                    new Dto.ProductCodeType
+                    {
+                        productCodeCategory = (Dto.ProductCodeCategoryType)i.ProductCodeCategory,
+                        ItemElementName = (Dto.ItemChoiceType)i.ProductCodeChoiceType,
+                        Item = i.ProductCode
+                    }
+                },
+            });
+        }
     }
 }
