@@ -1,8 +1,8 @@
 ﻿namespace Mews.Fiscalization.Hungary.Models
 {
-    public class CompanyInfo
+    public class Info
     {
-        public CompanyInfo(string taxpayerId, string vatCode, string name, SimpleAddress address)
+        public Info(string taxpayerId, string vatCode, string name, SimpleAddress address)
         {
             TaxpayerId = taxpayerId;
             VatCode = vatCode;
