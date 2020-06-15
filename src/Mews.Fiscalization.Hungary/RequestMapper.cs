@@ -6,84 +6,82 @@ namespace Mews.Fiscalization.Hungary
 {
     internal static class RequestMapper
     {
-        internal static Dto.InvoiceData MapInvoice(Invoice invoice)
+        internal static Dto.InvoiceData MapInvoiceData(InvoiceData data)
         {
-            var companyInfo = invoice.SupplierInfo;
-            var customerInfo = invoice.CustomerInfo;
-            var customerAddress = invoice.CustomerInfo.Address;
-            var companyAddress = companyInfo.Address;
             return new Dto.InvoiceData
             {
-                invoiceIssueDate = invoice.IssueDate,
-                invoiceNumber = invoice.Number,
+                invoiceIssueDate = data.IssueDate,
+                invoiceNumber = data.Number,
                 invoiceMain = new Dto.InvoiceMainType
                 {
-                    Items = new Dto.InvoiceType[]
-                    {
-                        new Dto.InvoiceType
-                        {
-                            invoiceLines = MapItems(invoice.Items).ToArray(),
-                            invoiceHead = new Dto.InvoiceHeadType
-                            {
-                                invoiceDetail = new Dto.InvoiceDetailType
-                                {
-                                    currencyCode = invoice.CurrencyCode,
-                                    invoiceAppearance = Dto.InvoiceAppearanceType.ELECTRONIC,
-                                    invoiceCategory = Dto.InvoiceCategoryType.AGGREGATE,
-                                    invoiceDeliveryDate = invoice.DeliveryDate,
-                                    paymentDate = invoice.PaymentDate,
-                                    selfBillingIndicator = invoice.IsSelfBilling,
-                                    cashAccountingIndicator = invoice.IsCashAccounting
-                                },
-                                supplierInfo = new Dto.SupplierInfoType
-                                {
-                                    supplierName = companyInfo.Name,
-                                    supplierAddress = new Dto.AddressType
-                                    {
-                                        Item = new Dto.SimpleAddressType
-                                        {
-                                            additionalAddressDetail = companyAddress.AddtionalAddressDetail,
-                                            city = companyAddress.City,
-                                            countryCode = companyAddress.CountryCode,
-                                            postalCode = companyAddress.PostalCode,
-                                            region = companyAddress.Region
-                                        }
-                                    },
-                                    supplierTaxNumber = new Dto.TaxNumberType
-                                    {
-                                        taxpayerId = companyInfo.TaxpayerId,
-                                        vatCode = companyInfo.VatCode
-                                    }
-                                },
-                                customerInfo = new Dto.CustomerInfoType
-                                {
-                                    customerAddress = new Dto.AddressType
-                                    {
-                                        Item = new Dto.SimpleAddressType
-                                        {
-                                            additionalAddressDetail = customerAddress.AddtionalAddressDetail,
-                                            city = customerAddress.City,
-                                            countryCode = customerAddress.CountryCode,
-                                            postalCode = customerAddress.PostalCode,
-                                            region = customerAddress.Region
-                                        }
-                                    },
-                                    customerName = customerInfo.Name,
-                                    customerTaxNumber = new Dto.TaxNumberType
-                                    {
-                                        taxpayerId = customerInfo.TaxpayerId,
-                                        vatCode = customerInfo.VatCode
-                                    }
-                                },
-                            },
-                            invoiceSummary = new Dto.SummaryType
-                            {
-                                Items = MapSummary(invoice).ToArray()
-                            }
-                        }
-                    }
+                    Items = MapInvoices(data.Invoices).ToArray()
                 }
             };
+        }
+
+        internal static IEnumerable<Dto.InvoiceType> MapInvoices(IEnumerable<Invoice> invoices)
+        {
+            return invoices.Select(i => new Dto.InvoiceType
+            {
+                invoiceLines = MapItems(i.Items).ToArray(),
+                invoiceHead = new Dto.InvoiceHeadType
+                {
+                    invoiceDetail = new Dto.InvoiceDetailType
+                    {
+                        currencyCode = i.CurrencyCode,
+                        invoiceAppearance = Dto.InvoiceAppearanceType.ELECTRONIC,
+                        invoiceCategory = Dto.InvoiceCategoryType.AGGREGATE,
+                        invoiceDeliveryDate = i.DeliveryDate,
+                        paymentDate = i.PaymentDate,
+                        selfBillingIndicator = i.IsSelfBilling,
+                        cashAccountingIndicator = i.IsCashAccounting
+                    },
+                    supplierInfo = new Dto.SupplierInfoType
+                    {
+                        supplierName = i.SupplierInfo.Name,
+                        supplierAddress = new Dto.AddressType
+                        {
+                            Item = new Dto.SimpleAddressType
+                            {
+                                additionalAddressDetail = i.SupplierInfo.Address.AddtionalAddressDetail,
+                                city = i.SupplierInfo.Address.City,
+                                countryCode = i.SupplierInfo.Address.CountryCode,
+                                postalCode = i.SupplierInfo.Address.PostalCode,
+                                region = i.SupplierInfo.Address.Region
+                            }
+                        },
+                        supplierTaxNumber = new Dto.TaxNumberType
+                        {
+                            taxpayerId = i.SupplierInfo.TaxpayerId,
+                            vatCode = i.SupplierInfo.VatCode
+                        }
+                    },
+                    customerInfo = new Dto.CustomerInfoType
+                    {
+                        customerAddress = new Dto.AddressType
+                        {
+                            Item = new Dto.SimpleAddressType
+                            {
+                                additionalAddressDetail = i.CustomerInfo.Address.AddtionalAddressDetail,
+                                city = i.CustomerInfo.Address.City,
+                                countryCode = i.CustomerInfo.Address.CountryCode,
+                                postalCode = i.CustomerInfo.Address.PostalCode,
+                                region = i.CustomerInfo.Address.Region
+                            }
+                        },
+                        customerName = i.CustomerInfo.Name,
+                        customerTaxNumber = new Dto.TaxNumberType
+                        {
+                            taxpayerId = i.CustomerInfo.TaxpayerId,
+                            vatCode = i.CustomerInfo.VatCode
+                        }
+                    },
+                },
+                invoiceSummary = new Dto.SummaryType
+                {
+                    Items = MapSummary(i).ToArray()
+                }
+            });
         }
 
         internal static IEnumerable<Dto.SummaryNormalType> MapSummary(Invoice invoice)
@@ -104,7 +102,7 @@ namespace Mews.Fiscalization.Hungary
             {
                 vatRate = new Dto.VatRateType
                 {
-                    Item = i.Percentage,
+                    Item = i.VatPercentage,
                     ItemElementName = Dto.ItemChoiceType1.vatPercentage
                 },
                 vatRateGrossData = new Dto.VatRateGrossDataType
@@ -146,17 +144,17 @@ namespace Mews.Fiscalization.Hungary
                 {
                     lineGrossAmountData = new Dto.LineGrossAmountDataType
                     {
-                        lineGrossAmountNormal = i.GrossAmount,
-                        lineGrossAmountNormalHUF = i.GrossAmountHUF
+                        lineGrossAmountNormal = i.TaxItem.Amount.GrossAmount,
+                        lineGrossAmountNormalHUF = i.TaxItem.AmountHUF.GrossAmountHUF
                     },
                     lineNetAmountData = new Dto.LineNetAmountDataType
                     {
-                        lineNetAmount = i.NetAmount,
-                        lineNetAmountHUF = i.NetAmountHUF
+                        lineNetAmount = i.TaxItem.Amount.NetAmount,
+                        lineNetAmountHUF = i.TaxItem.AmountHUF.NetAmountHUF
                     },
                     lineVatRate = new Dto.VatRateType
                     {
-                        Item = i.VatPercentage,
+                        Item = i.TaxItem.VatPercentage,
                         ItemElementName = Dto.ItemChoiceType1.vatPercentage
                     }
                 },

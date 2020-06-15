@@ -49,7 +49,7 @@ namespace Mews.Fiscalization.Hungary
             );
         }
 
-        public async Task<ResponseResult<string>> SendInvoicesAsync(ExchangeToken token, IEnumerable<Invoice> invoices)
+        public async Task<ResponseResult<string>> SendInvoicesAsync(ExchangeToken token, IEnumerable<InvoiceData> invoices)
         {
             var request = RequestCreator.CreateManageInvoicesRequest(TechnicalUser, SoftwareIdentification, token, invoices);
             return await Client.ProcessRequestAsync<Dto.ManageInvoiceRequest, Dto.ManageInvoiceResponse, string>(

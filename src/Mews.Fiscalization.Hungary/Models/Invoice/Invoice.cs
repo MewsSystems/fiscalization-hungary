@@ -1,39 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace Mews.Fiscalization.Hungary.Models
 {
-    public class Invoice
+    public sealed class Invoice
     {
         public Invoice(
-            string number,
-            DateTime issueDate,
             Info supplierInfo,
             Info customerInfo,
             IEnumerable<Item> items,
-            IEnumerable<TaxSummary> taxSummaries,
+            IEnumerable<TaxSummary> summaries,
             DateTime deliveryDate,
             DateTime paymentDate,
             string currencyCode,
             bool isSelfBilling = false,
             bool isCashAccounting = false)
         {
-            Number = number;
-            IssueDate = issueDate;
             SupplierInfo = supplierInfo;
             CustomerInfo = customerInfo;
             Items = items;
-            Summaries = taxSummaries;
+            Summaries = summaries;
             DeliveryDate = deliveryDate;
             PaymentDate = paymentDate;
             CurrencyCode = currencyCode;
             IsSelfBilling = isSelfBilling;
             IsCashAccounting = isCashAccounting;
         }
-
-        public string Number { get; }
-
-        public DateTime IssueDate { get; }
 
         public Info SupplierInfo { get; }
 

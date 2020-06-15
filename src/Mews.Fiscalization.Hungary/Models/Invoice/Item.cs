@@ -14,13 +14,9 @@ namespace Mews.Fiscalization.Hungary.Models
             string description,
             string productCode,
             MeasurementUnit measurementUnit,
+            TaxSummaryItem taxItem,
             decimal quantity,
             decimal netUnitPrice,
-            decimal grossAmount,
-            decimal grossAmountHUF,
-            decimal netAmount,
-            decimal netAmountHUF,
-            decimal vatPercentage,
             bool isDeposit = false)
         {
             Number = number;
@@ -30,13 +26,9 @@ namespace Mews.Fiscalization.Hungary.Models
             Description = description;
             ProductCode = productCode;
             MeasurementUnit = measurementUnit;
+            TaxItem = taxItem;
             Quantity = quantity;
             NetUnitPrice = netUnitPrice;
-            GrossAmount = grossAmount;
-            GrossAmountHUF = grossAmountHUF;
-            NetAmount = netAmount;
-            NetAmountHUF = netAmountHUF;
-            VatPercentage = vatPercentage;
             IsDeposit = isDeposit;
         }
 
@@ -54,19 +46,11 @@ namespace Mews.Fiscalization.Hungary.Models
 
         public MeasurementUnit MeasurementUnit { get; }
 
+        public TaxSummaryItem TaxItem { get; }
+
         public decimal Quantity { get; }
 
         public decimal NetUnitPrice { get; }
-
-        public decimal GrossAmount { get; }
-
-        public decimal GrossAmountHUF { get; }
-
-        public decimal NetAmount { get; }
-
-        public decimal NetAmountHUF { get; }
-
-        public decimal VatPercentage { get; }
 
         public bool IsDeposit { get; }
     }

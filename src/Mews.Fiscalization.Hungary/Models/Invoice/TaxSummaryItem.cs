@@ -2,14 +2,14 @@
 {
     public sealed class TaxSummaryItem
     {
-        public TaxSummaryItem(decimal percentage, Amount amount, AmountHUF amountHUF)
+        public TaxSummaryItem(decimal vatPercentage, Amount amount, AmountHUF amountHUF)
         {
-            Percentage = percentage;
+            VatPercentage = vatPercentage;
             Amount = amount;
             AmountHUF = amountHUF;
         }
 
-        public decimal Percentage { get; }
+        public decimal VatPercentage { get; }
 
         public Amount Amount { get; }
 
