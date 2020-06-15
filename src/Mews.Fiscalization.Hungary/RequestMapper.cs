@@ -78,42 +78,7 @@ namespace Mews.Fiscalization.Hungary
                             },
                             invoiceSummary = new Dto.SummaryType
                             {
-                                summaryGrossData = new Dto.SummaryGrossDataType
-                                {
-                                    invoiceGrossAmount = invoice.GrossAmount,
-                                    invoiceGrossAmountHUF = invoice.GrossAmountHUF
-                                },
-                                Items = new Dto.SummaryNormalType[]
-                                {
-                                    new Dto.SummaryNormalType
-                                    {
-                                        invoiceNetAmount = invoice.NetAmount,
-                                        invoiceNetAmountHUF = invoice.NetAmountHUF,
-                                        invoiceVatAmount = invoice.VatAmount,
-                                        invoiceVatAmountHUF = invoice.VatAmountHUF,
-                                        summaryByVatRate = new Dto.SummaryByVatRateType[]
-                                        {
-                                            new Dto.SummaryByVatRateType
-                                            {
-                                                vatRate = new Dto.VatRateType
-                                                {
-                                                    Item = invoice.VatPercentage,
-                                                    ItemElementName = Dto.ItemChoiceType1.vatPercentage
-                                                },
-                                                vatRateNetData = new Dto.VatRateNetDataType
-                                                {
-                                                    vatRateNetAmount = invoice.VatRateNetAmount,
-                                                    vatRateNetAmountHUF = invoice.VatRateNetAmountHUF
-                                                },
-                                                vatRateVatData = new Dto.VatRateVatDataType
-                                                {
-                                                    vatRateVatAmount = invoice.VatRateVatAmount,
-                                                    vatRateVatAmountHUF = invoice.VatRateVatAmountHUF
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
+                                Items = MapSummary(invoice).ToArray()
                             }
                         }
                     }
@@ -121,64 +86,89 @@ namespace Mews.Fiscalization.Hungary
             };
         }
 
+        internal static IEnumerable<Dto.SummaryNormalType> MapSummary(Invoice invoice)
+        {
+            return invoice.Summaries.Select(s => new Dto.SummaryNormalType
+            {
+                invoiceNetAmount = s.Amount.NetAmount,
+                invoiceNetAmountHUF = s.AmountHUF.NetAmountHUF,
+                invoiceVatAmount = s.Amount.VatAmount,
+                invoiceVatAmountHUF = s.AmountHUF.VatAmount,
+                summaryByVatRate = MapSummaryByVatRate(s.Items).ToArray()
+            });
+        }
+
+        internal static IEnumerable<Dto.SummaryByVatRateType> MapSummaryByVatRate(IEnumerable<TaxSummaryItem> items)
+        {
+            return items.Select(i => new Dto.SummaryByVatRateType
+            {
+                vatRate = new Dto.VatRateType
+                {
+                    Item = i.Percentage,
+                    ItemElementName = Dto.ItemChoiceType1.vatPercentage
+                },
+                vatRateGrossData = new Dto.VatRateGrossDataType
+                {
+                    vatRateGrossAmount = i.Amount.GrossAmount,
+                    vatRateGrossAmountHUF = i.AmountHUF.GrossAmountHUF
+                },
+                vatRateNetData = new Dto.VatRateNetDataType
+                {
+                    vatRateNetAmount = i.Amount.NetAmount,
+                    vatRateNetAmountHUF = i.AmountHUF.NetAmountHUF
+                },
+                vatRateVatData = new Dto.VatRateVatDataType
+                {
+                    vatRateVatAmount = i.Amount.VatAmount,
+                    vatRateVatAmountHUF = i.AmountHUF.VatAmount
+                }
+            });
+        }
+
         internal static IEnumerable<Dto.LineType> MapItems(IEnumerable<Item> items)
         {
-            return items.Select(i =>
+            return items.Select(i => new Dto.LineType
             {
-                var line = new Dto.LineType
+                lineNumber = i.Number,
+                lineDescription = i.Description,
+                quantity = i.Quantity,
+                unitOfMeasureOwn = i.MeasurementUnit.ToString(),
+                unitPrice = i.NetUnitPrice,
+                unitOfMeasureSpecified = true,
+                unitPriceSpecified = true,
+                quantitySpecified = true,
+                depositIndicator = i.IsDeposit,
+                aggregateInvoiceLineData = new Dto.AggregateInvoiceLineDataType
                 {
-                    lineNumber = i.Number,
-                    lineDescription = i.Description,
-                    quantity = i.Quantity,
-                    unitOfMeasureOwn = "Nights",
-                    unitPrice = i.NetUnitPrice,
-                    unitOfMeasureSpecified = true,
-                    unitPriceSpecified = true,
-                    depositIndicator = i.IsDeposit,
-                    aggregateInvoiceLineData = new Dto.AggregateInvoiceLineDataType
+                    lineDeliveryDate = i.ConsumptionDate
+                },
+                Item = new Dto.LineAmountsNormalType
+                {
+                    lineGrossAmountData = new Dto.LineGrossAmountDataType
                     {
-                        lineDeliveryDate = i.ConsumptionDate,
-                        lineExchangeRateSpecified = false
+                        lineGrossAmountNormal = i.GrossAmount,
+                        lineGrossAmountNormalHUF = i.GrossAmountHUF
                     },
-                    Item = new Dto.LineAmountsNormalType
+                    lineNetAmountData = new Dto.LineNetAmountDataType
                     {
-                        lineGrossAmountData = new Dto.LineGrossAmountDataType
-                        {
-                            lineGrossAmountNormal = i.GrossAmount,
-                            lineGrossAmountNormalHUF = i.GrossAmountHUF
-                        },
-                        lineNetAmountData = new Dto.LineNetAmountDataType
-                        {
-                            lineNetAmount = i.NetAmount,
-                            lineNetAmountHUF = i.NetAmountHUF
-                        },
-                        lineVatRate = new Dto.VatRateType
-                        {
-                            Item = i.VatPercentage,
-                            ItemElementName = Dto.ItemChoiceType1.vatPercentage
-                        }
+                        lineNetAmount = i.NetAmount,
+                        lineNetAmountHUF = i.NetAmountHUF
                     },
-                    productCodes = new Dto.ProductCodeType[]
+                    lineVatRate = new Dto.VatRateType
                     {
-                        new Dto.ProductCodeType
-                        {
-                            productCodeCategory = (Dto.ProductCodeCategoryType)i.ProductCodeCategory,
-                            ItemElementName = (Dto.ItemChoiceType)i.ProductCodeChoiceType,
-                            Item = i.ProductCode
-                        }
+                        Item = i.VatPercentage,
+                        ItemElementName = Dto.ItemChoiceType1.vatPercentage
                     }
-                };
-
-                if (i.DiscountDescription != null)
+                },
+                productCodes = new Dto.ProductCodeType[]
                 {
-                    line.lineDiscountData.discountDescription = i.DiscountDescription;
+                    new Dto.ProductCodeType
+                    {
+                        productCodeCategory = (Dto.ProductCodeCategoryType)i.ProductCodeCategory,
+                        ItemElementName = (Dto.ItemChoiceType)i.ProductCodeChoiceType,
+                        Item = i.ProductCode
+                    }
                 }
-                if (i.DiscountValue.HasValue)
-                {
-                    line.lineDiscountData.discountValue = i.DiscountValue.Value;
-                }
-
-                return line;
             });
         }
     }

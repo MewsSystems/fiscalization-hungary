@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Mews.Fiscalization.Hungary.Models
 {
@@ -11,6 +13,7 @@ namespace Mews.Fiscalization.Hungary.Models
             DateTime consumptionDate,
             string description,
             string productCode,
+            MeasurementUnit measurementUnit,
             decimal quantity,
             decimal netUnitPrice,
             decimal grossAmount,
@@ -18,9 +21,7 @@ namespace Mews.Fiscalization.Hungary.Models
             decimal netAmount,
             decimal netAmountHUF,
             decimal vatPercentage,
-            bool isDeposit = false,
-            string discountDescription = null,
-            decimal? discountValue = null)
+            bool isDeposit = false)
         {
             Number = number;
             ProductCodeCategory = productCodeCategory;
@@ -28,6 +29,7 @@ namespace Mews.Fiscalization.Hungary.Models
             ConsumptionDate = consumptionDate;
             Description = description;
             ProductCode = productCode;
+            MeasurementUnit = measurementUnit;
             Quantity = quantity;
             NetUnitPrice = netUnitPrice;
             GrossAmount = grossAmount;
@@ -36,8 +38,6 @@ namespace Mews.Fiscalization.Hungary.Models
             NetAmountHUF = netAmountHUF;
             VatPercentage = vatPercentage;
             IsDeposit = isDeposit;
-            DiscountDescription = discountDescription;
-            DiscountValue = discountValue;
         }
 
         public string Number { get; }
@@ -51,6 +51,8 @@ namespace Mews.Fiscalization.Hungary.Models
         public string Description { get; }
 
         public string ProductCode { get; }
+
+        public MeasurementUnit MeasurementUnit { get; }
 
         public decimal Quantity { get; }
 
@@ -67,9 +69,5 @@ namespace Mews.Fiscalization.Hungary.Models
         public decimal VatPercentage { get; }
 
         public bool IsDeposit { get; }
-
-        public string DiscountDescription { get; }
-
-        public decimal? DiscountValue { get; }
     }
 }
