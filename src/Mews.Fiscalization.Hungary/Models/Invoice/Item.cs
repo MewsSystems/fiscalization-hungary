@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace Mews.Fiscalization.Hungary.Models
 {
@@ -14,7 +12,9 @@ namespace Mews.Fiscalization.Hungary.Models
             string description,
             string productCode,
             MeasurementUnit measurementUnit,
-            TaxSummaryItem taxItem,
+            Amount amount,
+            Amount amountHUF,
+            decimal taxPercentage,
             decimal quantity,
             decimal netUnitPrice,
             bool isDeposit = false)
@@ -26,7 +26,9 @@ namespace Mews.Fiscalization.Hungary.Models
             Description = description;
             ProductCode = productCode;
             MeasurementUnit = measurementUnit;
-            TaxItem = taxItem;
+            Amount = amount;
+            AmountHUF = amountHUF;
+            TaxPercentage = taxPercentage;
             Quantity = quantity;
             NetUnitPrice = netUnitPrice;
             IsDeposit = isDeposit;
@@ -46,7 +48,11 @@ namespace Mews.Fiscalization.Hungary.Models
 
         public MeasurementUnit MeasurementUnit { get; }
 
-        public TaxSummaryItem TaxItem { get; }
+        public Amount Amount { get; }
+
+        public Amount AmountHUF { get; }
+
+        public decimal TaxPercentage { get; }
 
         public decimal Quantity { get; }
 

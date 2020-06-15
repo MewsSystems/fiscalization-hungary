@@ -10,7 +10,7 @@ namespace Mews.Fiscalization.Hungary.Models
             Info supplierInfo,
             Info customerInfo,
             IEnumerable<Item> items,
-            IEnumerable<TaxSummary> summaries,
+            IEnumerable<TaxSummary> taxSummaries,
             DateTime deliveryDate,
             DateTime paymentDate,
             string currencyCode,
@@ -20,7 +20,7 @@ namespace Mews.Fiscalization.Hungary.Models
             SupplierInfo = supplierInfo;
             CustomerInfo = customerInfo;
             Items = items;
-            Summaries = summaries;
+            TaxSummaries = taxSummaries;
             DeliveryDate = deliveryDate;
             PaymentDate = paymentDate;
             CurrencyCode = currencyCode;
@@ -34,7 +34,7 @@ namespace Mews.Fiscalization.Hungary.Models
 
         public IEnumerable<Item> Items { get; }
 
-        public IEnumerable<TaxSummary> Summaries { get; }
+        public IEnumerable<TaxSummary> TaxSummaries { get; }
 
         public DateTime DeliveryDate { get; }
 

@@ -86,7 +86,7 @@ namespace Mews.Fiscalization.Hungary
 
         internal static IEnumerable<Dto.SummaryNormalType> MapSummary(Invoice invoice)
         {
-            return invoice.Summaries.Select(s => new Dto.SummaryNormalType
+            return invoice.TaxSummaries.Select(s => new Dto.SummaryNormalType
             {
                 invoiceNetAmount = s.Amount.Net,
                 invoiceNetAmountHUF = s.AmountHUF.Net,
@@ -144,17 +144,17 @@ namespace Mews.Fiscalization.Hungary
                 {
                     lineGrossAmountData = new Dto.LineGrossAmountDataType
                     {
-                        lineGrossAmountNormal = i.TaxItem.Amount.Gross,
-                        lineGrossAmountNormalHUF = i.TaxItem.AmountHUF.Gross
+                        lineGrossAmountNormal = i.Amount.Gross,
+                        lineGrossAmountNormalHUF = i.AmountHUF.Gross
                     },
                     lineNetAmountData = new Dto.LineNetAmountDataType
                     {
-                        lineNetAmount = i.TaxItem.Amount.Net,
-                        lineNetAmountHUF = i.TaxItem.AmountHUF.Net
+                        lineNetAmount = i.Amount.Net,
+                        lineNetAmountHUF = i.AmountHUF.Net
                     },
                     lineVatRate = new Dto.VatRateType
                     {
-                        Item = i.TaxItem.VatPercentage,
+                        Item = i.TaxPercentage,
                         ItemElementName = Dto.ItemChoiceType1.vatPercentage
                     }
                 },
