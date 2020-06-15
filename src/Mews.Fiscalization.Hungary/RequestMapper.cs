@@ -88,10 +88,10 @@ namespace Mews.Fiscalization.Hungary
         {
             return invoice.Summaries.Select(s => new Dto.SummaryNormalType
             {
-                invoiceNetAmount = s.Amount.NetAmount,
-                invoiceNetAmountHUF = s.AmountHUF.NetAmountHUF,
-                invoiceVatAmount = s.Amount.VatAmount,
-                invoiceVatAmountHUF = s.AmountHUF.VatAmount,
+                invoiceNetAmount = s.Amount.Net,
+                invoiceNetAmountHUF = s.AmountHUF.Net,
+                invoiceVatAmount = s.Amount.Tax,
+                invoiceVatAmountHUF = s.AmountHUF.Tax,
                 summaryByVatRate = MapSummaryByVatRate(s.Items).ToArray()
             });
         }
@@ -107,18 +107,18 @@ namespace Mews.Fiscalization.Hungary
                 },
                 vatRateGrossData = new Dto.VatRateGrossDataType
                 {
-                    vatRateGrossAmount = i.Amount.GrossAmount,
-                    vatRateGrossAmountHUF = i.AmountHUF.GrossAmountHUF
+                    vatRateGrossAmount = i.Amount.Gross,
+                    vatRateGrossAmountHUF = i.AmountHUF.Gross
                 },
                 vatRateNetData = new Dto.VatRateNetDataType
                 {
-                    vatRateNetAmount = i.Amount.NetAmount,
-                    vatRateNetAmountHUF = i.AmountHUF.NetAmountHUF
+                    vatRateNetAmount = i.Amount.Net,
+                    vatRateNetAmountHUF = i.AmountHUF.Net
                 },
                 vatRateVatData = new Dto.VatRateVatDataType
                 {
-                    vatRateVatAmount = i.Amount.VatAmount,
-                    vatRateVatAmountHUF = i.AmountHUF.VatAmount
+                    vatRateVatAmount = i.Amount.Tax,
+                    vatRateVatAmountHUF = i.AmountHUF.Tax
                 }
             });
         }
@@ -144,13 +144,13 @@ namespace Mews.Fiscalization.Hungary
                 {
                     lineGrossAmountData = new Dto.LineGrossAmountDataType
                     {
-                        lineGrossAmountNormal = i.TaxItem.Amount.GrossAmount,
-                        lineGrossAmountNormalHUF = i.TaxItem.AmountHUF.GrossAmountHUF
+                        lineGrossAmountNormal = i.TaxItem.Amount.Gross,
+                        lineGrossAmountNormalHUF = i.TaxItem.AmountHUF.Gross
                     },
                     lineNetAmountData = new Dto.LineNetAmountDataType
                     {
-                        lineNetAmount = i.TaxItem.Amount.NetAmount,
-                        lineNetAmountHUF = i.TaxItem.AmountHUF.NetAmountHUF
+                        lineNetAmount = i.TaxItem.Amount.Net,
+                        lineNetAmountHUF = i.TaxItem.AmountHUF.Net
                     },
                     lineVatRate = new Dto.VatRateType
                     {

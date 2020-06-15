@@ -2,17 +2,17 @@
 {
     public sealed class Amount
     {
-        public Amount(decimal netAmount, decimal grossAmount, decimal vatAmount)
+        public Amount(decimal net, decimal gross, decimal tax)
         {
-            NetAmount = netAmount;
-            GrossAmount = grossAmount;
-            VatAmount = vatAmount;
+            Net = net;
+            Gross = gross;
+            Tax = tax;
         }
 
-        public decimal NetAmount { get; }
+        public decimal Net { get; }
 
-        public decimal GrossAmount { get; }
+        public decimal Gross { get; }
 
-        public decimal VatAmount { get; }
+        public decimal Tax { get; }
     }
 }

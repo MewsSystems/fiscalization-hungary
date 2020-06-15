@@ -4,7 +4,7 @@ namespace Mews.Fiscalization.Hungary.Models
 {
     public sealed class TaxSummary
     {
-        public TaxSummary(IEnumerable<TaxSummaryItem> items, Amount amount, AmountHUF amountHUF)
+        public TaxSummary(IEnumerable<TaxSummaryItem> items, Amount amount, Amount amountHUF)
         {
             Items = items;
             Amount = amount;
@@ -15,6 +15,6 @@ namespace Mews.Fiscalization.Hungary.Models
 
         public Amount Amount { get; }
 
-        public AmountHUF AmountHUF { get; }
+        public Amount AmountHUF { get; }
     }
 }
