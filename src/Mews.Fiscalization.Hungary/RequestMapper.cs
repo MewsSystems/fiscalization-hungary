@@ -41,14 +41,7 @@ namespace Mews.Fiscalization.Hungary
                         supplierName = i.SupplierInfo.Name,
                         supplierAddress = new Dto.AddressType
                         {
-                            Item = new Dto.SimpleAddressType
-                            {
-                                additionalAddressDetail = i.SupplierInfo.Address.AddtionalAddressDetail,
-                                city = i.SupplierInfo.Address.City,
-                                countryCode = i.SupplierInfo.Address.CountryCode,
-                                postalCode = i.SupplierInfo.Address.PostalCode,
-                                region = i.SupplierInfo.Address.Region
-                            }
+                            Item = MapAddress(i.SupplierInfo.Address)
                         },
                         supplierTaxNumber = new Dto.TaxNumberType
                         {
@@ -60,14 +53,7 @@ namespace Mews.Fiscalization.Hungary
                     {
                         customerAddress = new Dto.AddressType
                         {
-                            Item = new Dto.SimpleAddressType
-                            {
-                                additionalAddressDetail = i.CustomerInfo.Address.AddtionalAddressDetail,
-                                city = i.CustomerInfo.Address.City,
-                                countryCode = i.CustomerInfo.Address.CountryCode,
-                                postalCode = i.CustomerInfo.Address.PostalCode,
-                                region = i.CustomerInfo.Address.Region
-                            }
+                            Item = MapAddress(i.CustomerInfo.Address)
                         },
                         customerName = i.CustomerInfo.Name,
                         customerTaxNumber = new Dto.TaxNumberType
@@ -82,6 +68,18 @@ namespace Mews.Fiscalization.Hungary
                     Items = MapSummary(i).ToArray()
                 }
             });
+        }
+
+        internal static Dto.SimpleAddressType MapAddress(SimpleAddress address)
+        {
+            return new Dto.SimpleAddressType
+            {
+                additionalAddressDetail = address.AddtionalAddressDetail,
+                city = address.City,
+                countryCode = address.CountryCode,
+                postalCode = address.PostalCode,
+                region = address.Region
+            };
         }
 
         internal static IEnumerable<Dto.SummaryNormalType> MapSummary(Invoice invoice)
