@@ -23,18 +23,12 @@ namespace Mews.Fiscalization.Hungary
 
         internal static Dto.ManageInvoiceRequest CreateManageInvoicesRequest(TechnicalUser user, SoftwareIdentification software, ExchangeToken token, IEnumerable<Invoice> invoiceData)
         {
-            var operationTypes = new List<Dto.InvoiceOperationType>();
-            for (int i = 0; i < invoiceData.Count(); ++i)
+            var operationTypes = invoiceData.Select((invoice, idx) => new Dto.InvoiceOperationType
             {
-                var invoice = invoiceData.ElementAt(i);
-                operationTypes.Add(new Dto.InvoiceOperationType
-                {
-                    index = i + 1,
-                    invoiceData = Encoding.UTF8.GetBytes(XmlManipulator.Serialize(Invoice.Map(invoice))),
-                    invoiceOperation = Dto.ManageInvoiceOperationType.CREATE
-                });
-            }
-
+                index = idx + 1,
+                invoiceData = Encoding.UTF8.GetBytes(XmlManipulator.Serialize(RequestMapper.MapInvoice(invoice))),
+                invoiceOperation = Dto.ManageInvoiceOperationType.CREATE
+            });
             var additionalSignatureData = operationTypes.Select(t => $"{t.invoiceOperation}{Convert.ToBase64String(t.invoiceData)}");
             var encodedAddtionalSignatureData = Sha512.GetSha3Hash(string.Join("", additionalSignatureData));
 
