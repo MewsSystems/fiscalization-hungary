@@ -51,7 +51,7 @@ namespace Mews.Fiscalization.Hungary.Models
         public string Description { get; }
 
         public string ProductCode { get; }
-        
+
         public decimal Quantity { get; }
 
         public decimal NetUnitPrice { get; }
