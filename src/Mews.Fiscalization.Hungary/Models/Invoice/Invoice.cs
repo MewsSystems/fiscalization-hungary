@@ -41,7 +41,7 @@ namespace Mews.Fiscalization.Hungary.Models
             ));
         }
 
-        public LimitedString1to50 Number { get; }
+        public InvoiceNumber Number { get; }
 
         public DateTime IssueDate { get; }
 
