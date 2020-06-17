@@ -1,4 +1,4 @@
-﻿namespace Mews.Fiscalization.Hungary.Models.Types
+﻿namespace Mews.Fiscalization.Hungary.Models
 {
     public sealed class CurrencyCode
     {
@@ -8,5 +8,10 @@
         }
 
         public string Value { get; }
+
+        public static bool IsValid(string value)
+        {
+            return true;
+        }
     }
 }

@@ -6,5 +6,10 @@
             : base(value, 1, 512)
         {
         }
+
+        public static bool IsValid(string value)
+        {
+            return true;
+        }
     }
 }
