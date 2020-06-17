@@ -118,7 +118,7 @@ namespace Mews.Fiscalization.Hungary
                     city = address.City.Value,
                     countryCode = address.CountryCode.Value,
                     postalCode = address.PostalCode.Value,
-                    region = address.Region != null ? address.Region.Value : null
+                    region = address.Region?.Value
                 }
             };
         }
@@ -152,7 +152,7 @@ namespace Mews.Fiscalization.Hungary
             {
                 lineNumber = (index + 1).ToString(),
                 lineDescription = i.Description.Value,
-                quantity = i.Quantity.Value,
+                quantity = i.Quantity,
                 unitOfMeasureOwn = i.MeasurementUnit.ToString(),
                 unitPrice = i.UnitAmount.Net.Value,
                 quantitySpecified = true,

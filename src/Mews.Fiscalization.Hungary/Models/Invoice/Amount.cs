@@ -5,25 +5,25 @@ namespace Mews.Fiscalization.Hungary.Models
 {
     public sealed class Amount
     {
-        public Amount(AmountType net, AmountType gross, AmountType tax)
+        public Amount(AmountValue net, AmountValue gross, AmountValue tax)
         {
             Net = net;
             Gross = gross;
             Tax = tax;
         }
 
-        public AmountType Net { get; }
+        public AmountValue Net { get; }
 
-        public AmountType Gross { get; }
+        public AmountValue Gross { get; }
 
-        public AmountType Tax { get; }
+        public AmountValue Tax { get; }
 
         internal static Amount Sum(IEnumerable<Amount> amounts)
         {
             return new Amount(
-                net: new AmountType(amounts.Sum(a => a.Net.Value)),
-                gross: new AmountType(amounts.Sum(a => a.Gross.Value)),
-                tax: new AmountType(amounts.Sum(a => a.Tax.Value))
+                net: new AmountValue(amounts.Sum(a => a.Net.Value)),
+                gross: new AmountValue(amounts.Sum(a => a.Gross.Value)),
+                tax: new AmountValue(amounts.Sum(a => a.Tax.Value))
             );
         }
     }

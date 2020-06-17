@@ -10,7 +10,7 @@ namespace Mews.Fiscalization.Hungary.Models
             ItemAmounts amounts,
             MeasurementUnit measurementUnit,
             Description description,
-            Quantity quantity,
+            int quantity,
             Amount unitAmount,
             bool isDeposit = false)
         {
@@ -18,7 +18,7 @@ namespace Mews.Fiscalization.Hungary.Models
             Amounts = Check.NotNull(amounts, nameof(amounts));
             MeasurementUnit = measurementUnit;
             Description = Check.NotNull(description, nameof(description));
-            Quantity = Check.NotNull(quantity, nameof(quantity));
+            Quantity = quantity;
             UnitAmount = Check.NotNull(unitAmount, nameof(unitAmount));
             IsDeposit = isDeposit;
         }
@@ -31,7 +31,7 @@ namespace Mews.Fiscalization.Hungary.Models
 
         public Description Description { get; }
 
-        public Quantity Quantity { get; }
+        public int Quantity { get; }
 
         public Amount UnitAmount { get; }
 

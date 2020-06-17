@@ -1,8 +1,8 @@
 ﻿namespace Mews.Fiscalization.Hungary.Models
 {
-    public sealed class AmountType
+    public sealed class AmountValue
     {
-        public AmountType(decimal value)
+        public AmountValue(decimal value)
         {
             // total digits: 18
             // fraction digits: 2
