@@ -7,7 +7,7 @@ namespace Mews.Fiscalization.Hungary.Models
     public class Invoice
     {
         public Invoice(
-            string number,
+            InvoiceNumber number,
             DateTime issueDate,
             Info supplierInfo,
             Info customerInfo,
@@ -41,7 +41,7 @@ namespace Mews.Fiscalization.Hungary.Models
             ));
         }
 
-        public string Number { get; }
+        public LimitedString1to50 Number { get; }
 
         public DateTime IssueDate { get; }
 

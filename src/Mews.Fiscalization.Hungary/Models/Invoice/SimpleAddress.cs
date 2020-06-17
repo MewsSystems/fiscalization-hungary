@@ -2,23 +2,23 @@
 {
     public sealed class SimpleAddress
     {
-        public SimpleAddress(string city, string countryCode, string postalCode, string region, string addtionalAddressDetail)
+        public SimpleAddress(City city, CountryCode countryCode, AdditionalAddressDetail addtionalAddressDetail, PostalCode postalCode, Region region = null)
         {
             City = city;
             CountryCode = countryCode;
+            AddtionalAddressDetail = addtionalAddressDetail;
             PostalCode = postalCode;
             Region = region;
-            AddtionalAddressDetail = addtionalAddressDetail;
         }
 
-        public string City { get; }
+        public City City { get; }
 
-        public string CountryCode { get; }
+        public CountryCode CountryCode { get; }
 
-        public string PostalCode { get; }
+        public AdditionalAddressDetail AddtionalAddressDetail { get; }
 
-        public string Region { get; }
+        public PostalCode PostalCode { get; }
 
-        public string AddtionalAddressDetail { get; }
+        public Region Region { get; }
     }
 }

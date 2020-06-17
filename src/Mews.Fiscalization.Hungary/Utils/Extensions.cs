@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Mews.Fiscalization.Hungary.Utils
 {
-    internal static class Helpers
+    internal static class Extensions
     {
         public static IEnumerable<TSource> NullToEmpty<TSource>(this IEnumerable<TSource> source)
         {

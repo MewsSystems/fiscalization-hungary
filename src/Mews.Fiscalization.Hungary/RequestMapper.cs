@@ -13,7 +13,7 @@ namespace Mews.Fiscalization.Hungary
             return new Dto.InvoiceData
             {
                 invoiceIssueDate = invoice.IssueDate,
-                invoiceNumber = invoice.Number,
+                invoiceNumber = invoice.Number.Value,
                 invoiceMain = new Dto.InvoiceMainType
                 {
                     Items = new Dto.InvoiceType[]
@@ -36,13 +36,13 @@ namespace Mews.Fiscalization.Hungary
                                 },
                                 supplierInfo = new Dto.SupplierInfoType
                                 {
-                                    supplierName = supplierInfo.Name,
+                                    supplierName = supplierInfo.Name.Value,
                                     supplierAddress = MapAddress(supplierInfo.Address),
                                     supplierTaxNumber = MapTaxNumber(supplierInfo)
                                 },
                                 customerInfo = new Dto.CustomerInfoType
                                 {
-                                    customerName = customerInfo.Name,
+                                    customerName = customerInfo.Name.Value,
                                     customerAddress = MapAddress(customerInfo.Address),
                                     customerTaxNumber = MapTaxNumber(customerInfo)
                                 },
@@ -103,8 +103,8 @@ namespace Mews.Fiscalization.Hungary
         {
             return new Dto.TaxNumberType
             {
-                taxpayerId = info.TaxpayerId,
-                vatCode = info.VatCode
+                taxpayerId = info.TaxpayerId.Value,
+                vatCode = info.VatCode.Value
             };
         }
 
@@ -114,11 +114,11 @@ namespace Mews.Fiscalization.Hungary
             {
                 Item = new Dto.SimpleAddressType
                 {
-                    additionalAddressDetail = address.AddtionalAddressDetail,
-                    city = address.City,
-                    countryCode = address.CountryCode,
-                    postalCode = address.PostalCode,
-                    region = address.Region
+                    additionalAddressDetail = address.AddtionalAddressDetail.Value,
+                    city = address.City.Value,
+                    countryCode = address.CountryCode.Value,
+                    postalCode = address.PostalCode.Value,
+                    region = address.Region.Value
                 }
             };
         }

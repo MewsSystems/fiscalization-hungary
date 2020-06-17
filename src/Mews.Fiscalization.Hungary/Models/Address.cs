@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Security.Cryptography;
-using Mews.Fiscalization.Hungary.Dto;
 
 namespace Mews.Fiscalization.Hungary.Models
 {
@@ -61,14 +59,14 @@ namespace Mews.Fiscalization.Hungary.Models
         {
             switch (type)
             {
-                case TaxpayerAddressTypeType.HQ:
+                case Dto.TaxpayerAddressTypeType.HQ:
                     return AddressType.HQ;
-                case TaxpayerAddressTypeType.SITE:
+                case Dto.TaxpayerAddressTypeType.SITE:
                     return AddressType.SITE;
-                case TaxpayerAddressTypeType.BRANCH:
+                case Dto.TaxpayerAddressTypeType.BRANCH:
                     return AddressType.BRANCH;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(type), type, null);
+                    throw new NotImplementedException($"{nameof(type)} is not implemented.");
             }
         }
     }

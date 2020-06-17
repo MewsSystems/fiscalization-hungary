@@ -2,7 +2,7 @@
 {
     public class Info
     {
-        public Info(string taxpayerId, string vatCode, string name, SimpleAddress address)
+        public Info(TaxPayerId taxpayerId, VatCode vatCode, Name name, SimpleAddress address)
         {
             TaxpayerId = taxpayerId;
             VatCode = vatCode;
@@ -10,11 +10,11 @@
             Address = address;
         }
 
-        public string TaxpayerId { get; }
+        public TaxPayerId TaxpayerId { get; }
 
-        public string VatCode { get; }
+        public VatCode VatCode { get; }
 
-        public string Name { get; }
+        public Name Name { get; }
 
         public SimpleAddress Address { get; }
     }
