@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Mews.Fiscalization.Hungary.Models
+﻿namespace Mews.Fiscalization.Hungary.Models
 {
     public class Address
     {
@@ -39,35 +37,5 @@ namespace Mews.Fiscalization.Hungary.Models
         public string Door { get; }
 
         public AddressType Type { get; }
-
-        internal static Address Map(Dto.TaxpayerAddressItemType addressItem)
-        {
-            var address = addressItem.taxpayerAddress;
-            return new Address(
-                countryCode: address.countryCode,
-                postalCode: address.postalCode,
-                city: address.city,
-                streetName: address.streetName,
-                number: address.number,
-                floor: address.floor,
-                door: address.door,
-                type: GetAddressType(addressItem.taxpayerAddressType)
-            );
-        }
-
-        private static AddressType GetAddressType(Dto.TaxpayerAddressTypeType type)
-        {
-            switch (type)
-            {
-                case Dto.TaxpayerAddressTypeType.HQ:
-                    return AddressType.HQ;
-                case Dto.TaxpayerAddressTypeType.SITE:
-                    return AddressType.SITE;
-                case Dto.TaxpayerAddressTypeType.BRANCH:
-                    return AddressType.BRANCH;
-                default:
-                    throw new NotImplementedException($"{nameof(type)} is not implemented.");
-            }
-        }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace Mews.Fiscalization.Hungary.Models.TaxPayer
 {
@@ -22,21 +21,6 @@ namespace Mews.Fiscalization.Hungary.Models.TaxPayer
 
         public string VatCode { get; }
 
-
         public DateTime? InfoDate { get; }
-
-        internal static TaxPayerData Map(Dto.QueryTaxpayerResponse response)
-        {
-            var addressItem = response.taxpayerData.taxpayerAddressList.First();
-            var taxPayerData = response.taxpayerData;
-            var taxNumberDetail = taxPayerData.taxNumberDetail;
-            return new TaxPayerData(
-                id: taxNumberDetail.taxpayerId,
-                name: taxPayerData.taxpayerName,
-                address: Address.Map(addressItem),
-                vatCode: taxNumberDetail.vatCode,
-                infoDate: response.infoDate
-            );
-        }
     }
 }
