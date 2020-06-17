@@ -13,10 +13,5 @@
         }
 
         public decimal Value { get; }
-
-        public static bool IsValid(string value)
-        {
-            return true;
-        }
     }
 }

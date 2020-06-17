@@ -51,8 +51,8 @@ namespace Mews.Fiscalization.Hungary
                             {
                                 summaryGrossData = new Dto.SummaryGrossDataType
                                 {
-                                    invoiceGrossAmount = invoice.Amount.Gross,
-                                    invoiceGrossAmountHUF = invoice.AmountHUF.Gross
+                                    invoiceGrossAmount = invoice.Amount.Gross.Value,
+                                    invoiceGrossAmountHUF = invoice.AmountHUF.Gross.Value
                                 },
                                 Items = new Dto.SummaryNormalType[]
                                 {
@@ -69,10 +69,10 @@ namespace Mews.Fiscalization.Hungary
         {
             return new Dto.SummaryNormalType
             {
-                invoiceNetAmount = invoice.Amount.Net,
-                invoiceNetAmountHUF = invoice.AmountHUF.Net,
-                invoiceVatAmount = invoice.Amount.Tax,
-                invoiceVatAmountHUF = invoice.AmountHUF.Tax,
+                invoiceNetAmount = invoice.Amount.Net.Value,
+                invoiceNetAmountHUF = invoice.AmountHUF.Net.Value,
+                invoiceVatAmount = invoice.Amount.Tax.Value,
+                invoiceVatAmountHUF = invoice.AmountHUF.Tax.Value,
                 summaryByVatRate = invoice.TaxSummary.Select(s => MapSummaryByVatRate(s)).ToArray()
             };
         }
@@ -88,13 +88,13 @@ namespace Mews.Fiscalization.Hungary
                 },
                 vatRateNetData = new Dto.VatRateNetDataType
                 {
-                    vatRateNetAmount = taxSummary.Amount.Net,
-                    vatRateNetAmountHUF = taxSummary.AmountHUF.Net
+                    vatRateNetAmount = taxSummary.Amount.Net.Value,
+                    vatRateNetAmountHUF = taxSummary.AmountHUF.Net.Value
                 },
                 vatRateVatData = new Dto.VatRateVatDataType
                 {
-                    vatRateVatAmount = taxSummary.Amount.Tax,
-                    vatRateVatAmountHUF = taxSummary.AmountHUF.Tax
+                    vatRateVatAmount = taxSummary.Amount.Tax.Value,
+                    vatRateVatAmountHUF = taxSummary.AmountHUF.Tax.Value
                 }
             };
         }
@@ -118,7 +118,7 @@ namespace Mews.Fiscalization.Hungary
                     city = address.City.Value,
                     countryCode = address.CountryCode.Value,
                     postalCode = address.PostalCode.Value,
-                    region = address.Region.Value
+                    region = address.Region != null ? address.Region.Value : null
                 }
             };
         }
@@ -130,13 +130,13 @@ namespace Mews.Fiscalization.Hungary
             {
                 lineGrossAmountData = new Dto.LineGrossAmountDataType
                 {
-                    lineGrossAmountNormal = item.Amounts.Amount.Gross,
-                    lineGrossAmountNormalHUF = item.Amounts.AmountHUF.Gross
+                    lineGrossAmountNormal = item.Amounts.Amount.Gross.Value,
+                    lineGrossAmountNormalHUF = item.Amounts.AmountHUF.Gross.Value
                 },
                 lineNetAmountData = new Dto.LineNetAmountDataType
                 {
-                    lineNetAmount = item.Amounts.Amount.Net,
-                    lineNetAmountHUF = item.Amounts.AmountHUF.Net
+                    lineNetAmount = item.Amounts.Amount.Net.Value,
+                    lineNetAmountHUF = item.Amounts.AmountHUF.Net.Value
                 },
                 lineVatRate = new Dto.VatRateType
                 {
@@ -151,10 +151,10 @@ namespace Mews.Fiscalization.Hungary
             return items.Select((i, index) => new Dto.LineType
             {
                 lineNumber = (index + 1).ToString(),
-                lineDescription = i.Description,
-                quantity = i.Quantity,
+                lineDescription = i.Description.Value,
+                quantity = i.Quantity.Value,
                 unitOfMeasureOwn = i.MeasurementUnit.ToString(),
-                unitPrice = i.UnitAmount.Net,
+                unitPrice = i.UnitAmount.Net.Value,
                 quantitySpecified = true,
                 unitOfMeasureSpecified = true,
                 unitPriceSpecified = true,
@@ -163,15 +163,6 @@ namespace Mews.Fiscalization.Hungary
                 aggregateInvoiceLineData = new Dto.AggregateInvoiceLineDataType
                 {
                     lineDeliveryDate = i.ConsumptionDate
-                },
-                productCodes = new Dto.ProductCodeType[]
-                {
-                    new Dto.ProductCodeType
-                    {
-                        productCodeCategory = (Dto.ProductCodeCategoryType)i.ProductCodeCategory,
-                        ItemElementName = (Dto.ItemChoiceType)i.ProductCodeChoiceType,
-                        Item = i.ProductCode
-                    }
                 }
             });
         }
