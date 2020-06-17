@@ -6,11 +6,11 @@ namespace Mews.Fiscalization.Hungary.Models
     {
         public TechnicalUser(string login, string password, string xmlSigningKey, string taxNumber, string encryptionKey)
         {
-            Login = login;
-            PasswordHash = Sha512.GetHash(password);
-            XmlSigningKey = xmlSigningKey;
-            TaxNumber = taxNumber;
-            EncryptionKey = encryptionKey;
+            Login = Check.NotNull(login, nameof(login));
+            PasswordHash = Sha512.GetHash(Check.NotNull(password, nameof(password)));
+            XmlSigningKey = Check.NotNull(xmlSigningKey, nameof(xmlSigningKey));
+            TaxNumber = Check.NotNull(taxNumber, nameof(taxNumber));
+            EncryptionKey = Check.NotNull(encryptionKey, nameof(encryptionKey));
         }
 
         public string Login { get; }

@@ -25,8 +25,8 @@ namespace Mews.Fiscalization.Hungary
                             {
                                 invoiceDetail = new Dto.InvoiceDetailType
                                 {
-                                    exchangeRate = invoice.ExchangeRate,
-                                    currencyCode = invoice.CurrencyCode,
+                                    exchangeRate = invoice.ExchangeRate.Value,
+                                    currencyCode = invoice.CurrencyCode.Value,
                                     invoiceAppearance = Dto.InvoiceAppearanceType.ELECTRONIC,
                                     invoiceCategory = Dto.InvoiceCategoryType.AGGREGATE,
                                     invoiceDeliveryDate = invoice.DeliveryDate,

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Mews.Fiscalization.Hungary.Models.Types;
+using Mews.Fiscalization.Hungary.Utils;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,22 +18,22 @@ namespace Mews.Fiscalization.Hungary.Models
             Amount amountHUF,
             DateTime deliveryDate,
             DateTime paymentDate,
-            string currencyCode,
-            decimal exchangeRate,
+            CurrencyCode currencyCode,
+            ExchangeRate exchangeRate,
             bool isSelfBilling = false,
             bool isCashAccounting = false)
         {
-            Number = number;
+            Number = Check.NotNull(number, nameof(InvoiceNumber));
             IssueDate = issueDate;
-            SupplierInfo = supplierInfo;
-            CustomerInfo = customerInfo;
-            Items = items;
-            Amount = amount;
-            AmountHUF = amountHUF;
+            SupplierInfo = Check.NotNull(supplierInfo, nameof(supplierInfo));
+            CustomerInfo = Check.NotNull(customerInfo, nameof(customerInfo));
+            Items = Check.NotNull(items, nameof(items));
+            Amount = Check.NotNull(amount, nameof(amount));
+            AmountHUF = Check.NotNull(amountHUF, nameof(amountHUF));
             DeliveryDate = deliveryDate;
             PaymentDate = paymentDate;
-            CurrencyCode = currencyCode;
-            ExchangeRate = exchangeRate;
+            CurrencyCode = Check.NotNull(currencyCode, nameof(currencyCode));
+            ExchangeRate = Check.NotNull(exchangeRate, nameof(exchangeRate));
             IsSelfBilling = isSelfBilling;
             IsCashAccounting = isCashAccounting;
             TaxSummary = items.GroupBy(i => i.Amounts.TaxRatePercentage).Select(g => new TaxSummaryItem(
@@ -61,9 +63,9 @@ namespace Mews.Fiscalization.Hungary.Models
 
         public DateTime PaymentDate { get; }
 
-        public string CurrencyCode { get; }
+        public CurrencyCode CurrencyCode { get; }
 
-        public decimal ExchangeRate { get; }
+        public ExchangeRate ExchangeRate { get; }
 
         public bool IsSelfBilling { get; }
 

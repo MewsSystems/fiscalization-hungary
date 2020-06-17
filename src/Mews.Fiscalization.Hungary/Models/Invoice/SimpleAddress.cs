@@ -1,13 +1,15 @@
-﻿namespace Mews.Fiscalization.Hungary.Models
+﻿using Mews.Fiscalization.Hungary.Utils;
+
+namespace Mews.Fiscalization.Hungary.Models
 {
     public sealed class SimpleAddress
     {
         public SimpleAddress(City city, CountryCode countryCode, AdditionalAddressDetail addtionalAddressDetail, PostalCode postalCode, Region region = null)
         {
-            City = city;
-            CountryCode = countryCode;
-            AddtionalAddressDetail = addtionalAddressDetail;
-            PostalCode = postalCode;
+            City = Check.NotNull(city, nameof(city));
+            CountryCode = Check.NotNull(countryCode, nameof(countryCode));
+            AddtionalAddressDetail = Check.NotNull(addtionalAddressDetail, nameof(addtionalAddressDetail));
+            PostalCode = Check.NotNull(postalCode, nameof(postalCode));
             Region = region;
         }
 

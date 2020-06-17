@@ -1,15 +1,17 @@
+using Mews.Fiscalization.Hungary.Utils;
+
 namespace Mews.Fiscalization.Hungary.Models
 {
     public sealed class SoftwareIdentification
     {
         public SoftwareIdentification(string id, string name, SoftwareType type, string mainVersion, string developerName, string developerContact, string developerCountry = null, string developerTaxNumber = null)
         {
-            Id = id;
-            Name = name;
+            Id = Check.NotNull(id, nameof(id));
+            Name = Check.NotNull(name, nameof(name));
             Type = type;
-            MainVersion = mainVersion;
-            DeveloperName = developerName;
-            DeveloperContact = developerContact;
+            MainVersion = Check.NotNull(mainVersion, nameof(mainVersion));
+            DeveloperName = Check.NotNull(developerName, nameof(developerName));
+            DeveloperContact = Check.NotNull(developerContact, nameof(developerContact));
             DeveloperCountry = developerCountry;
             DeveloperTaxNumber = developerTaxNumber;
         }
