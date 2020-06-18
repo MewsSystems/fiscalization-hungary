@@ -1,14 +1,14 @@
-﻿namespace Mews.Fiscalization.Hungary.Models
+﻿using Mews.Fiscalization.Hungary.Utils;
+
+namespace Mews.Fiscalization.Hungary.Models
 {
     public sealed class ExchangeRate
     {
         public ExchangeRate(decimal value)
         {
-            // minInclusive value = "0"
-            // maxInclusive value = "1"
-            // totalDigits value = "5"
-            // fractionDigits value = "4"
-            // NOT NULL
+            Check.Digits(value, maxdigitCount: 1);
+            Check.Precision(value, maxPrecision: 4);
+            Check.InRange(value, 0, 1);
             Value = value;
         }
 

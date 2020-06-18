@@ -1,12 +1,13 @@
-﻿namespace Mews.Fiscalization.Hungary.Models
+﻿using Mews.Fiscalization.Hungary.Utils;
+
+namespace Mews.Fiscalization.Hungary.Models
 {
     public sealed class AmountValue
     {
         public AmountValue(decimal value)
         {
-            // total digits: 18
-            // fraction digits: 2
-            // NOT NULL
+            Check.Digits(value, maxdigitCount: 18);
+            Check.Precision(value, maxPrecision: 2);
             Value = value;
         }
 

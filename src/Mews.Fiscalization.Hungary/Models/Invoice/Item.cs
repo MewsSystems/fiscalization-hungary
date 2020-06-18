@@ -12,7 +12,7 @@ namespace Mews.Fiscalization.Hungary.Models
             Description description,
             int quantity,
             Amount unitAmount,
-            ExchangeRate exchangeRate,
+            ExchangeRate exchangeRate = null,
             bool isDeposit = false)
         {
             ConsumptionDate = consumptionDate;
@@ -21,7 +21,7 @@ namespace Mews.Fiscalization.Hungary.Models
             Description = Check.NotNull(description, nameof(description));
             Quantity = quantity;
             UnitAmount = Check.NotNull(unitAmount, nameof(unitAmount));
-            ExchangeRate = Check.NotNull(exchangeRate, nameof(exchangeRate));
+            ExchangeRate = exchangeRate; // TODO - check that it is provided if price is not in HUF.
             IsDeposit = isDeposit;
         }
 

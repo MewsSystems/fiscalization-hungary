@@ -15,7 +15,7 @@ namespace Mews.Fiscalization.Hungary.Models
 
             if (value != null)
             {
-                Check.InRange(value, minLength, maxLength);
+                Check.LengthInRange(value, minLength, maxLength);
 
                 if (regexValidation != null)
                 {
