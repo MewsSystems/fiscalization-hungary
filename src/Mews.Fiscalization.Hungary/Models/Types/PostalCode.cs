@@ -4,7 +4,7 @@
     {
         private static string regexValidation = "[A-Z0-9][A-Z0-9\\s\\-]{1,8}[A-Z0-9]";
 
-        public PostalCode(string value)
+        public PostalCode(string value = "0000")
             : base(value, regexValidation: regexValidation)
         {
         }

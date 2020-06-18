@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 
 namespace Mews.Fiscalization.Hungary.Utils
 {
@@ -19,8 +20,7 @@ namespace Mews.Fiscalization.Hungary.Utils
 
         public static bool MatchesRegex(this string value, string regex)
         {
-            throw new NotImplementedException()
-            return value != null;
+            return value != null && Regex.Match(value, regex).Success;
         }
 
         public static bool LengthIsInRange(this string value, int? minLength = null, int? maxLength = null)

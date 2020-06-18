@@ -8,10 +8,5 @@
             : base(value, 1, 50, regexValidation)
         {
         }
-
-        public static bool IsValid(string value)
-        {
-            return ValidatedString.IsValid(value, 1, 50, regexValidation: regexValidation);
-        }
     }
 }
