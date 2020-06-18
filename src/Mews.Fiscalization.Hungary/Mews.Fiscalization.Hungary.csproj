@@ -8,6 +8,8 @@
         <RepositoryUrl>https://github.com/MewsSystems/fiscalization-hungary</RepositoryUrl>
         <RepositoryType>Git</RepositoryType>
         <PackageTags>fiscalization hungary nav</PackageTags>
+        <PackageVersion>0.2.0-prerelease</PackageVersion>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     </PropertyGroup>
 
     <ItemGroup>

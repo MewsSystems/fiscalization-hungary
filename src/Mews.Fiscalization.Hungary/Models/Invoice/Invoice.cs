@@ -13,7 +13,6 @@ namespace Mews.Fiscalization.Hungary.Models
             Info supplierInfo,
             Info customerInfo,
             IEnumerable<Item> items,
-            DateTime deliveryDate,
             DateTime paymentDate,
             CurrencyCode currencyCode,
             bool isSelfBilling = false,
@@ -24,7 +23,7 @@ namespace Mews.Fiscalization.Hungary.Models
             SupplierInfo = Check.NotNull(supplierInfo, nameof(supplierInfo));
             CustomerInfo = Check.NotNull(customerInfo, nameof(customerInfo));
             Items = Check.NotNull(items, nameof(items));
-            DeliveryDate = deliveryDate;
+            DeliveryDate = Items.Max(i => i.ConsumptionDate);
             PaymentDate = paymentDate;
             CurrencyCode = Check.NotNull(currencyCode, nameof(currencyCode));
             IsSelfBilling = isSelfBilling;
