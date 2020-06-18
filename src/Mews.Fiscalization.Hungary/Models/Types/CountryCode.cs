@@ -1,9 +1,11 @@
 ﻿namespace Mews.Fiscalization.Hungary.Models
 {
-    public sealed class CountryCode : LimitedString2
+    public sealed class CountryCode : ValidatedString
     {
-        public CountryCode(string value) // [A-Z]{2}
-            : base(value)
+        private static string regexValidation = "[A-Z]{2}";
+
+        public CountryCode(string value)
+            : base(value, 2, 2, regexValidation)
         {
         }
     }
