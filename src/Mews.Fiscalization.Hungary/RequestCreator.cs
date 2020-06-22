@@ -28,12 +28,12 @@ namespace Mews.Fiscalization.Hungary
             return request;
         }
 
-        internal static Dto.ManageInvoiceRequest CreateManageInvoicesRequest(TechnicalUser user, SoftwareIdentification software, ExchangeToken token, IEnumerable<Invoice> invoices)
+        internal static Dto.ManageInvoiceRequest CreateManageInvoicesRequest(TechnicalUser user, SoftwareIdentification software, ExchangeToken token, IEnumerable<IndexedItem<Invoice>> invoices)
         {
-            var operationTypes = invoices.Select((invoice, i) => new Dto.InvoiceOperationType
+            var operationTypes = invoices.Select(indexedInvoice => new Dto.InvoiceOperationType
             {
-                index = i + 1,
-                invoiceData = Encoding.UTF8.GetBytes(XmlManipulator.Serialize(RequestMapper.MapInvoice(invoice))),
+                index = indexedInvoice.Index,
+                invoiceData = Encoding.UTF8.GetBytes(XmlManipulator.Serialize(RequestMapper.MapInvoice(indexedInvoice.Item))),
                 invoiceOperation = Dto.ManageInvoiceOperationType.CREATE
             });
             var invoiceHashes = operationTypes.Select(t => Sha512.GetSha3Hash($"{t.invoiceOperation}{Convert.ToBase64String(t.invoiceData)}"));

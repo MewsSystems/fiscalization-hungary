@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Mews.Fiscalization.Hungary.Models;
 using Mews.Fiscalization.Hungary.Models.TaxPayer;
 using Mews.Fiscalization.Hungary.Utils;
@@ -39,17 +40,19 @@ namespace Mews.Fiscalization.Hungary
             }
         }
 
-        internal static ResponseResult<InvoiceStatus> MapInvoiceStatus(Dto.QueryTransactionStatusResponse response)
+        internal static ResponseResult<TransactionStatus> MapTransactionStatus(Dto.QueryTransactionStatusResponse response)
         {
             var result = response.processingResults;
-            if (result == null || result.processingResult.First() == null)
+            if (result?.processingResult == null)
             {
-                return new ResponseResult<InvoiceStatus>(errorResult: new ErrorResult(ResultErrorCode.InvalidId));
+                return new ResponseResult<TransactionStatus>(errorResult: new ErrorResult(ResultErrorCode.InvalidId));
             }
-            else
-            {
-                return new ResponseResult<InvoiceStatus>(successResult: InvoiceStatus.Map(response));
-            }
+
+            return new ResponseResult<TransactionStatus>(
+                successResult: new TransactionStatus(
+                    invoiceStatuses: result.processingResult.Select(r => InvoiceStatus.Map(r))
+                )
+            );
         }
 
         internal static ResponseResult<string> MapInvoices(Dto.ManageInvoiceResponse response)

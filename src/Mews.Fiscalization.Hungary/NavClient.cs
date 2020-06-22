@@ -40,18 +40,18 @@ namespace Mews.Fiscalization.Hungary
             );
         }
 
-        public async Task<ResponseResult<InvoiceStatus>> GetInvoiceStatusAsync(string invoiceId)
+        public async Task<ResponseResult<TransactionStatus>> GetTransactionStatusAsync(string transactionId)
         {
-            if (string.IsNullOrEmpty(invoiceId))
+            if (string.IsNullOrEmpty(transactionId))
             {
-                throw new ArgumentException("InvoiceId must be specified.");
+                throw new ArgumentException($"{nameof(transactionId)} must be specified.");
             }
 
-            var request = RequestCreator.CreateQueryTransactionStatusRequest(TechnicalUser, SoftwareIdentification, invoiceId);
-            return await Client.ProcessRequestAsync<Dto.QueryTransactionStatusRequest, Dto.QueryTransactionStatusResponse, InvoiceStatus>(
+            var request = RequestCreator.CreateQueryTransactionStatusRequest(TechnicalUser, SoftwareIdentification, transactionId);
+            return await Client.ProcessRequestAsync<Dto.QueryTransactionStatusRequest, Dto.QueryTransactionStatusResponse, TransactionStatus>(
                 endpoint: "queryTransactionStatus",
                 request: request,
-                successFunc: response => ModelMapper.MapInvoiceStatus(response)
+                successFunc: response => ModelMapper.MapTransactionStatus(response)
             );
         }
 
@@ -70,7 +70,7 @@ namespace Mews.Fiscalization.Hungary
             );
         }
 
-        public async Task<ResponseResult<string>> SendInvoicesAsync(ExchangeToken token, IEnumerable<Invoice> invoices)
+        public async Task<ResponseResult<string>> SendInvoicesAsync(ExchangeToken token, IEnumerable<IndexedItem<Invoice>> invoices)
         {
             var request = RequestCreator.CreateManageInvoicesRequest(TechnicalUser, SoftwareIdentification, token, invoices);
             return await Client.ProcessRequestAsync<Dto.ManageInvoiceRequest, Dto.ManageInvoiceResponse, string>(

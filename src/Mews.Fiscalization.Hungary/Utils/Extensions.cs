@@ -47,5 +47,10 @@ namespace Mews.Fiscalization.Hungary.Utils
         {
             return (denominator == 0) ? 0 : numerator / denominator;
         }
+
+        public static List<TSource> AsList<TSource>(this IEnumerable<TSource> source)
+        {
+            return source as List<TSource> ?? source.ToList();
+        }
     }
 }

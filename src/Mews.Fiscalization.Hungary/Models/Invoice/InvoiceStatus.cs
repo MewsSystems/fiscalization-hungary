@@ -15,12 +15,14 @@ namespace Mews.Fiscalization.Hungary.Models
 
         public IEnumerable<InvoiceValidationResult> ValidationResults { get; }
 
-        internal static InvoiceStatus Map(Dto.QueryTransactionStatusResponse response)
+        internal static IndexedItem<InvoiceStatus> Map(Dto.ProcessingResultType result)
         {
-            var result = response.processingResults.processingResult.First();
-            return new InvoiceStatus(
-                status: (InvoiceState)result.invoiceStatus,
-                validationResults: InvoiceValidationResult.Map(result.businessValidationMessages, result.technicalValidationMessages).ToArray()
+            return new IndexedItem<InvoiceStatus>(
+                index: result.index,
+                item: new InvoiceStatus(
+                    status: (InvoiceState)result.invoiceStatus,
+                    validationResults: InvoiceValidationResult.Map(result.businessValidationMessages, result.technicalValidationMessages).ToArray()
+                )
             );
         }
     }
