@@ -11,8 +11,8 @@ namespace Mews.Fiscalization.Hungary.Models
         public Invoice(
             InvoiceNumber number,
             DateTime issueDate,
-            Info supplierInfo,
-            Info customerInfo,
+            SupplierInfo supplierInfo,
+            CustomerInfo customerInfo,
             IEnumerable<Item> items,
             DateTime paymentDate,
             CurrencyCode currencyCode,
@@ -44,9 +44,9 @@ namespace Mews.Fiscalization.Hungary.Models
 
         public DateTime IssueDate { get; }
 
-        public Info SupplierInfo { get; }
+        public SupplierInfo SupplierInfo { get; }
 
-        public Info CustomerInfo { get; }
+        public CustomerInfo CustomerInfo { get; }
 
         public IEnumerable<Item> Items { get; }
 

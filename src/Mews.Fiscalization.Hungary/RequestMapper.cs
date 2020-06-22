@@ -40,13 +40,20 @@ namespace Mews.Fiscalization.Hungary
                                 {
                                     supplierName = supplierInfo.Name.Value,
                                     supplierAddress = MapAddress(supplierInfo.Address),
-                                    supplierTaxNumber = MapTaxNumber(supplierInfo)
+                                    supplierTaxNumber = new Dto.TaxNumberType
+                                    {
+                                        taxpayerId = supplierInfo.TaxpayerId.Value,
+                                        vatCode = supplierInfo.VatCode.Value
+                                    }
                                 },
                                 customerInfo = new Dto.CustomerInfoType
                                 {
                                     customerName = customerInfo.Name.Value,
                                     customerAddress = MapAddress(customerInfo.Address),
-                                    customerTaxNumber = MapTaxNumber(customerInfo)
+                                    customerTaxNumber = new Dto.TaxNumberType
+                                    {
+                                        taxpayerId = customerInfo.TaxpayerId.Value
+                                    }
                                 },
                             },
                             invoiceSummary = new Dto.SummaryType
@@ -98,15 +105,6 @@ namespace Mews.Fiscalization.Hungary
                     vatRateVatAmount = taxSummary.Amount.Tax.Value,
                     vatRateVatAmountHUF = taxSummary.AmountHUF.Tax.Value
                 }
-            };
-        }
-
-        internal static Dto.TaxNumberType MapTaxNumber(Info info)
-        {
-            return new Dto.TaxNumberType
-            {
-                taxpayerId = info.TaxpayerId.Value,
-                vatCode = info.VatCode.Value
             };
         }
 
