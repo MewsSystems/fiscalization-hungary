@@ -42,5 +42,10 @@ namespace Mews.Fiscalization.Hungary.Utils
             var exceedsMaxLength = maxLength != null && length > maxLength;
             return !isShorterThanMinLength && !exceedsMaxLength;
         }
+
+        public static decimal SafeDivision(this decimal numerator, decimal denominator)
+        {
+            return (denominator == 0) ? 0 : numerator / denominator;
+        }
     }
 }

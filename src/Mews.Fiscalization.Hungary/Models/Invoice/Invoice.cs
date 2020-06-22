@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace Mews.Fiscalization.Hungary.Models
 {
@@ -33,6 +34,10 @@ namespace Mews.Fiscalization.Hungary.Models
                 amount: Amount.Sum(g.Select(i => i.Amounts.Amount)),
                 amountHUF: Amount.Sum(g.Select(i => i.Amounts.AmountHUF))
             ));
+            ExchangeRate = new ExchangeRate(Extensions.SafeDivision(
+                numerator: TaxSummary.Sum(s => s.AmountHUF.Tax.Value),
+                denominator: TaxSummary.Sum(s => s.Amount.Tax.Value)
+            ));
         }
 
         public InvoiceNumber Number { get; }
@@ -52,6 +57,8 @@ namespace Mews.Fiscalization.Hungary.Models
         public DateTime PaymentDate { get; }
 
         public CurrencyCode CurrencyCode { get; }
+
+        public ExchangeRate ExchangeRate { get; }
 
         public bool IsSelfBilling { get; }
 
