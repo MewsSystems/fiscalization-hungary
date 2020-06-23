@@ -24,10 +24,8 @@ namespace Mews.Fiscalization.Hungary.Utils
 
         public static bool PrecisionSmallerThanOrEqualTo(this decimal value, int maxPrecision)
         {
-            var wholePart = Math.Floor(value);
-            var fractionalPart = value - wholePart;
-            var rest = fractionalPart * maxPrecision;
-            return Math.Floor(rest) == 0;
+            var minAllowedFraction = (decimal)Math.Pow(10, -1 * maxPrecision);
+            return value % minAllowedFraction == 0;
         }
 
         public static bool MatchesRegex(this string value, string regex)
