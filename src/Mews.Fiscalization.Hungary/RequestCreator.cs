@@ -66,9 +66,9 @@ namespace Mews.Fiscalization.Hungary
                 },
                 user = new Dto.UserHeaderType
                 {
-                    login = user.Login,
+                    login = user.Login.Value,
                     passwordHash = user.PasswordHash,
-                    taxNumber = user.TaxNumber,
+                    taxNumber = user.TaxId.Value,
                     requestSignature = GetRequestSignature(user, requestId, timestamp, additionalSignatureData)
                 },
                 software = new Dto.SoftwareType
@@ -88,7 +88,7 @@ namespace Mews.Fiscalization.Hungary
         private static string GetRequestSignature(TechnicalUser user, string requestId, DateTime timestamp, string additionalSignatureData = null)
         {
             var formattedTimestamp = timestamp.ToString("yyyyMMddHHmmss");
-            var signatureData = $"{requestId}{formattedTimestamp}{user.XmlSigningKey}{additionalSignatureData}";
+            var signatureData = $"{requestId}{formattedTimestamp}{user.SigningKey.Value}{additionalSignatureData}";
             return Sha512.GetSha3Hash(signatureData);
         }
     }

@@ -2,7 +2,7 @@
 {
     public sealed class TaxPayerId : ValidatedString
     {
-        private static readonly string regexValidation = "[0-9]{8}";
+        public static readonly string regexValidation = "^[0-9]{8}$";
 
         public TaxPayerId(string value)
             :base(value, 8, 8, regexValidation)

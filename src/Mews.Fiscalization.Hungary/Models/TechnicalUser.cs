@@ -1,25 +1,26 @@
+using Mews.Fiscalization.Hungary.Models.Types;
 using Mews.Fiscalization.Hungary.Utils;
 
 namespace Mews.Fiscalization.Hungary.Models
 {
     public sealed class TechnicalUser
     {
-        public TechnicalUser(string login, string password, string xmlSigningKey, string taxNumber, string encryptionKey)
+        public TechnicalUser(Login login, string password, SigningKey signingKey, TaxPayerId taxId, string encryptionKey)
         {
             Login = Check.NotNull(login, nameof(login));
             PasswordHash = Sha512.GetHash(Check.NotNull(password, nameof(password)));
-            XmlSigningKey = Check.NotNull(xmlSigningKey, nameof(xmlSigningKey));
-            TaxNumber = Check.NotNull(taxNumber, nameof(taxNumber));
+            SigningKey = Check.NotNull(signingKey, nameof(signingKey));
+            TaxId = Check.NotNull(taxId, nameof(taxId));
             EncryptionKey = Check.NotNull(encryptionKey, nameof(encryptionKey));
         }
 
-        public string Login { get; }
+        public Login Login { get; }
 
         public string PasswordHash { get; }
 
-        public string XmlSigningKey { get; }
+        public SigningKey SigningKey { get; }
 
-        public string TaxNumber { get; }
+        public TaxPayerId TaxId { get; }
 
         public string EncryptionKey { get; }
     }
