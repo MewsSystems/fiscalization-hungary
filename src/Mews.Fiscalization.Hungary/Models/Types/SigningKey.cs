@@ -6,7 +6,7 @@ namespace Mews.Fiscalization.Hungary.Models.Types
 {
    public sealed class SigningKey : ValidatedString
     {
-        public static readonly string regexValidation = "^[0-9A-Za-z]{2}[-]{1}[0-9A-Za-z]{4}[-]{1}[0-9A-Za-z]{24}$";
+        private static readonly string regexValidation = "^[0-9A-Za-z]{2}[-]{1}[0-9A-Za-z]{4}[-]{1}[0-9A-Za-z]{24}$";
 
         public SigningKey(string value)
             : base(value, 32, 32, regexValidation)

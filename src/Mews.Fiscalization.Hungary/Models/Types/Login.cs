@@ -2,7 +2,7 @@
 {
     public sealed class Login : ValidatedString
     {
-        public static readonly string regexValidation = "^[0-9A-Za-z]{15}$";
+        private static readonly string regexValidation = "^[0-9A-Za-z]{15}$";
 
         public Login(string value)
             : base(value, 15, 15, regexValidation)
