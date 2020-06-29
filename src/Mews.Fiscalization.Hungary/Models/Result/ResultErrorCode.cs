@@ -4,6 +4,6 @@
     {
         InvalidCredentials = 1,
         MaintenanceMode = 2,
-        Unauthorized = 3
+        UnauthorizedUser = 3
     }
 }

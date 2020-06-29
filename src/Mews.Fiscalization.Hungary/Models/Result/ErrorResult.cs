@@ -34,7 +34,7 @@ namespace Mews.Fiscalization.Hungary.Models
                 case "MAINTENANCE_MODE":
                     return ResultErrorCode.MaintenanceMode;
                 case "FORBIDDEN":
-                    return ResultErrorCode.Unauthorized;
+                    return ResultErrorCode.UnauthorizedUser;
                 case "INVALID_REQUEST_SIGNATURE":
                     throw new InvalidOperationException("Invalid request signature.");
                 default:
