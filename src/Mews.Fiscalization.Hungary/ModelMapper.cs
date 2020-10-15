@@ -13,7 +13,6 @@ namespace Mews.Fiscalization.Hungary
             try
             {
                 var decryptedToken = Aes.Decrypt(user.EncryptionKey.Value, response.encodedExchangeToken);
-                var tada = Encoding.ASCII.GetBytes("DummyTada");
                 return new ResponseResult<ExchangeToken, ExchangeTokenErrorCode>(successResult: new ExchangeToken(
                     value: decryptedToken,
                     validFrom: response.tokenValidityFrom,
