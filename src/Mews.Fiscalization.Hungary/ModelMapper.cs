@@ -2,7 +2,6 @@
 using Mews.Fiscalization.Hungary.Models;
 using Mews.Fiscalization.Hungary.Utils;
 using System.Linq;
-using System.Text;
 
 namespace Mews.Fiscalization.Hungary
 {
