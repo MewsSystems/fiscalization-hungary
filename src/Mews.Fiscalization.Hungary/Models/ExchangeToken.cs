@@ -4,7 +4,7 @@ namespace Mews.Fiscalization.Hungary.Models
 {
     public sealed class ExchangeToken
     {
-        internal ExchangeToken(byte[] value, DateTime validFrom, DateTime validTo)
+        public ExchangeToken(byte[] value, DateTime validFrom, DateTime validTo)
         {
             Value = value;
             ValidFrom = validFrom;

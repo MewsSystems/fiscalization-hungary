@@ -4,7 +4,7 @@
         where TResult : class
         where TCode : struct
     {
-        internal ResponseResult(TResult successResult = null, ErrorResult<ResultErrorCode> generalErrorMessage = null, ErrorResult<TCode> operationErrorResult = null)
+        public ResponseResult(TResult successResult = null, ErrorResult<ResultErrorCode> generalErrorMessage = null, ErrorResult<TCode> operationErrorResult = null)
         {
             SuccessResult = successResult;
             GeneralErrorResult = generalErrorMessage;

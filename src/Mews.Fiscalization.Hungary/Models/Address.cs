@@ -2,7 +2,7 @@
 {
     public class Address
     {
-        internal Address(
+        public Address(
             string countryCode,
             string postalCode,
             string city,
