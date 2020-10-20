@@ -1,19 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Mews</Authors>
+    <Copyright>Mews</Copyright>
+    <PackageProjectUrl>https://github.com/MewsSystems/fiscalization-hungary</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/MewsSystems/fiscalization-hungary</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>fiscalization hungary nav</PackageTags>
+    <PackageVersion>1.0.3</PackageVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="BouncyCastle.NetCore" Version="1.8.6" />
+  </ItemGroup>
 
-    <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
-        <Authors>Mews</Authors>
-        <Copyright>Mews</Copyright>
-        <PackageProjectUrl>https://github.com/MewsSystems/fiscalization-hungary</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/MewsSystems/fiscalization-hungary</RepositoryUrl>
-        <RepositoryType>Git</RepositoryType>
-        <PackageTags>fiscalization hungary nav</PackageTags>
-        <PackageVersion>1.0.2</PackageVersion>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    </PropertyGroup>
-
-    <ItemGroup>
-      <PackageReference Include="BouncyCastle.NetCore" Version="1.8.6" />
-    </ItemGroup>
+  <PropertyGroup>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
 
 </Project>
