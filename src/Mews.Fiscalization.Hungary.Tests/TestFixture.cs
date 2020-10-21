@@ -22,11 +22,11 @@ namespace Mews.Fiscalization.Hungary.Tests
             );
             var softwareIdentification = new SoftwareIdentification(
                 id: "123456789123456789",
-                name: "Mews",
+                name: "Test",
                 type: SoftwareType.LocalSoftware,
                 mainVersion: "1.0",
-                developerName: "Mews",
-                developerContact: "tech@mews.com"
+                developerName: "Test",
+                developerContact: "test@test.com"
             );
             return new NavClient(technicalUser, softwareIdentification, NavEnvironment.Test);
         }
