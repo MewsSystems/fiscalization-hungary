@@ -12,7 +12,7 @@ namespace Mews.Fiscalization.Hungary.Tests
         [Test]
         public async Task Test()
         {
-            var navClient = TestFixture.GetClient();
+            var navClient = TestFixture.GetNavClient();
             var exchangeToken = await navClient.GetExchangeTokenAsync();
             var invoiceTransactionId = await navClient.SendInvoicesAsync(exchangeToken.SuccessResult, SequentialEnumerable.FromPreordered(new[] { GetInvoice() }, startIndex: 1));
 
@@ -30,7 +30,7 @@ namespace Mews.Fiscalization.Hungary.Tests
         [Test]
         public async Task CorrectionInvoiceSucceeds()
         {
-            var navClient = TestFixture.GetClient();
+            var navClient = TestFixture.GetNavClient();
             var exchangeToken = await navClient.GetExchangeTokenAsync();
             var response = await navClient.SendModificationDocumentsAsync(
                 token: exchangeToken.SuccessResult,

@@ -9,7 +9,7 @@ namespace Mews.Fiscalization.Hungary.Tests
         [Test]
         public async Task StatusCheck()
         {
-            var client = TestFixture.GetClient();
+            var client = TestFixture.GetNavClient();
             var status = await client.GetTransactionStatusAsync("30NKOUNC66LSDD4Z");
 
             Assert.IsNotNull(status.SuccessResult);

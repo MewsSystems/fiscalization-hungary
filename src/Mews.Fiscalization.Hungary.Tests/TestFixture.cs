@@ -5,22 +5,13 @@ namespace Mews.Fiscalization.Hungary.Tests
 {
     public static class TestFixture
     {
-        private static readonly Login Login;
-        private static readonly string Password;
-        private static readonly SigningKey SigningKey;
-        private static readonly TaxPayerId TaxPayerId;
-        private static readonly EncryptionKey EncryptionKey;
+        private static readonly Login Login = new Login(Environment.GetEnvironmentVariable("login") ?? "INSERT_LOGIN");
+        private static readonly string Password = Environment.GetEnvironmentVariable("password") ?? "INSERT_PASSWORD";
+        private static readonly SigningKey SigningKey = new SigningKey(Environment.GetEnvironmentVariable("signing_key") ?? "INSERT_SIGNING_KEY");
+        private static readonly TaxPayerId TaxPayerId = new TaxPayerId(Environment.GetEnvironmentVariable("tax_payer_id") ?? "INSERT_TAX_PAYER_ID");
+        private static readonly EncryptionKey EncryptionKey = new EncryptionKey(Environment.GetEnvironmentVariable("encryption_key") ?? "INSERT_ENCRYPTION_KEY");
 
-        static TestFixture()
-        {
-            Login = new Login(Environment.GetEnvironmentVariable("login") ?? "INSERT_LOGIN");
-            Password = Environment.GetEnvironmentVariable("password") ?? "INSERT_PASSWORD";
-            SigningKey = new SigningKey(Environment.GetEnvironmentVariable("signing_key") ?? "INSERT_SIGNING_KEY");
-            TaxPayerId = new TaxPayerId(Environment.GetEnvironmentVariable("tax_payer_id") ?? "INSERT_TAX_PAYER_ID");
-            EncryptionKey = new EncryptionKey(Environment.GetEnvironmentVariable("encryption_key") ?? "INSERT_ENCRYPTION_KEY");
-        }
-
-        public static NavClient GetClient()
+        public static NavClient GetNavClient()
         {
             var technicalUser = new TechnicalUser(
                 login: Login,
