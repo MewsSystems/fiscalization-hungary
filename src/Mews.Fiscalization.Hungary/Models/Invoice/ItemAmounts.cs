@@ -4,7 +4,7 @@ namespace Mews.Fiscalization.Hungary.Models
 {
     public sealed class ItemAmounts
     {
-        public ItemAmounts(Amount amount, Amount amountHUF, decimal? taxRatePercentage)
+        public ItemAmounts(Amount amount, Amount amountHUF, decimal? taxRatePercentage = null)
         {
             Amount = Check.NotNull(amount, nameof(amount));
             AmountHUF = Check.NotNull(amountHUF, nameof(amountHUF));

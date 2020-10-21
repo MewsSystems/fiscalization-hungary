@@ -166,8 +166,7 @@ namespace Mews.Fiscalization.Hungary.Tests
                     net: new AmountValue(amountHUF),
                     gross: new AmountValue(amountHUF),
                     tax: new AmountValue(amountHUF)
-                ),
-                taxRatePercentage: 0
+                )
             );
         }
 
