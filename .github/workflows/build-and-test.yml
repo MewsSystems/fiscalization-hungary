@@ -42,4 +42,4 @@ jobs:
         signing_key: ${{secrets.SigningKey}}
         tax_payer_id: ${{secrets.TaxPayerId}}
         encryption_key: ${{secrets.EncryptionKey}}
-      run: dotnet test --no-restore --verbosity normal
+      run: echo $login
