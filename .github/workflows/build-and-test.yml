@@ -37,9 +37,9 @@ jobs:
     
     - name: Test
       env:
-        login: ${{secrets.Login}}
-        password: ${{secrets.Password}}
-        signing_key: ${{secrets.SigningKey}}
-        tax_payer_id: ${{secrets.TaxPayerId}}
-        encryption_key: ${{secrets.EncryptionKey}}
-      run: echo $login
+        login: ${{secrets.login}}
+        password: ${{secrets.password}}
+        signing_key: ${{secrets.signing_key}}
+        tax_payer_id: ${{secrets.tax_payer_id}}
+        encryption_key: ${{secrets.encryption_key}}
+      run: dotnet test --no-restore --verbosity normal
