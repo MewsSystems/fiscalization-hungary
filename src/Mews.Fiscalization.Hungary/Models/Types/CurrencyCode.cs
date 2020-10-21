@@ -18,5 +18,10 @@
         {
             return other is CurrencyCode otherCurrencyCode && otherCurrencyCode.Value == Value;
         }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }

@@ -1143,8 +1143,6 @@
 
         private string requestIdField;
 
-        private System.DateTime timestampField;
-
         private RequestVersionType requestVersionField;
 
         private HeaderVersionType headerVersionField;
