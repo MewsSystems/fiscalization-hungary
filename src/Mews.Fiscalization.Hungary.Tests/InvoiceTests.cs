@@ -13,7 +13,7 @@ namespace Mews.Fiscalization.Hungary.Tests
         public async Task Test()
         {
             var navClient = TestFixture.GetClient();
-            var exchangeToken = navClient.GetExchangeTokenAsync().Result;
+            var exchangeToken = await navClient.GetExchangeTokenAsync();
             var invoiceTransactionId = await navClient.SendInvoicesAsync(exchangeToken.SuccessResult, SequentialEnumerable.FromPreordered(new[] { GetInvoice() }, startIndex: 1));
 
             Thread.Sleep(3000);
