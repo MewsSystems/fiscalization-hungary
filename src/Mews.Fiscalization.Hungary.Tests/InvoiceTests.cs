@@ -10,7 +10,7 @@ namespace Mews.Fiscalization.Hungary.Tests
     public class InvoiceTests
     {
         [Test]
-        public async Task Test()
+        public async Task SendInvoiceSucceeds()
         {
             var navClient = TestFixture.GetNavClient();
             var exchangeToken = await navClient.GetExchangeTokenAsync();
@@ -28,7 +28,7 @@ namespace Mews.Fiscalization.Hungary.Tests
         }
 
         [Test]
-        public async Task CorrectionInvoiceSucceeds()
+        public async Task SendCorrectionInvoiceSucceeds()
         {
             var navClient = TestFixture.GetNavClient();
             var exchangeToken = await navClient.GetExchangeTokenAsync();
