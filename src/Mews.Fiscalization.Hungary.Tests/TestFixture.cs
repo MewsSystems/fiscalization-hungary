@@ -5,11 +5,11 @@ namespace Mews.Fiscalization.Hungary.Tests
 {
     public static class TestFixture
     {
-        private static readonly Login Login = new Login("");
-        private static readonly string Password = "";
-        private static readonly SigningKey SigningKey = new SigningKey("");
-        private static readonly TaxPayerId TaxPayerId = new TaxPayerId("");
-        private static readonly EncryptionKey EncryptionKey = new EncryptionKey("");
+        private static readonly Login Login;
+        private static readonly string Password;
+        private static readonly SigningKey SigningKey;
+        private static readonly TaxPayerId TaxPayerId;
+        private static readonly EncryptionKey EncryptionKey;
 
         static TestFixture()
         {
