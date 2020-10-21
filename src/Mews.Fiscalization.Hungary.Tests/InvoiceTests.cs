@@ -85,8 +85,8 @@ namespace Mews.Fiscalization.Hungary.Tests
 
         private ModificationInvoice GetModificationInvoice()
         {
-            var amounts = GetItemAmounts(gross: 100, exchangeRate: 300);
-            var unitAmounts = GetItemAmounts(gross: 100, exchangeRate: 300);
+            var amounts = GetItemAmounts(amount: 100, exchangeRate: 300);
+            var unitAmounts = GetItemAmounts(amount: 100, exchangeRate: 300);
             var item = new InvoiceItem(
                 consumptionDate: new DateTime(2020, 08, 30),
                 totalAmounts: amounts,
@@ -97,8 +97,8 @@ namespace Mews.Fiscalization.Hungary.Tests
                 exchangeRate: new ExchangeRate(300)
             );
 
-            var amounts1 = GetItemAmounts(gross: 100, exchangeRate: 300);
-            var unitAmounts1 = GetItemAmounts(gross: 100, exchangeRate: 300);
+            var amounts1 = GetItemAmounts(amount: 100, exchangeRate: 300);
+            var unitAmounts1 = GetItemAmounts(amount: 100, exchangeRate: 300);
             var item1 = new InvoiceItem(
                 consumptionDate: new DateTime(2020, 08, 31),
                 totalAmounts: amounts1,
@@ -153,22 +153,21 @@ namespace Mews.Fiscalization.Hungary.Tests
             );
         }
 
-        private ItemAmounts GetItemAmounts(decimal gross, decimal exchangeRate = 1, decimal? taxRate = null)
+        private ItemAmounts GetItemAmounts(decimal amount, decimal exchangeRate = 1)
         {
-            var taxRatePercentage = taxRate ?? 0;
-            var grossHuf = gross * exchangeRate;
+            var amountHUF = amount * exchangeRate;
             return new ItemAmounts(
                 amount: new Amount(
-                    net: new AmountValue(gross / (1 + taxRatePercentage)),
-                    gross: new AmountValue(gross),
-                    tax: new AmountValue(gross * taxRatePercentage)
+                    net: new AmountValue(amount),
+                    gross: new AmountValue(amount),
+                    tax: new AmountValue(amount)
                 ),
                 amountHUF: new Amount(
-                    net: new AmountValue(grossHuf / (1 + taxRatePercentage)),
-                    gross: new AmountValue(grossHuf),
-                    tax: new AmountValue(grossHuf * taxRatePercentage)
+                    net: new AmountValue(amountHUF),
+                    gross: new AmountValue(amountHUF),
+                    tax: new AmountValue(amountHUF)
                 ),
-                taxRatePercentage: taxRate
+                taxRatePercentage: 0
             );
         }
 
