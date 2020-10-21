@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mews.Fiscalization.Hungary", "src\Mews.Fiscalization.Hungary\Mews.Fiscalization.Hungary.csproj", "{B746326A-F41E-4014-B531-67E5DC52CD87}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mews.Fiscalization.Hungary", "Mews.Fiscalization.Hungary\Mews.Fiscalization.Hungary.csproj", "{B746326A-F41E-4014-B531-67E5DC52CD87}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mews.Fiscalization.Hungary.Tests", "src\Mews.Fiscalization.Hungary.Tests\Mews.Fiscalization.Hungary.Tests.csproj", "{62705CFB-7F25-45F3-8FCB-A4DDD1EC1FC1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mews.Fiscalization.Hungary.Tests", "Mews.Fiscalization.Hungary.Tests\Mews.Fiscalization.Hungary.Tests.csproj", "{62705CFB-7F25-45F3-8FCB-A4DDD1EC1FC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
