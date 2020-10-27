@@ -2,6 +2,10 @@
   
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <DevelopmentDependency>true</DevelopmentDependency>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <IncludeSymbols>false</IncludeSymbols>
     <Authors>Mews</Authors>
     <Copyright>Mews</Copyright>
     <PackageProjectUrl>https://github.com/MewsSystems/fiscalization-hungary</PackageProjectUrl>
@@ -10,7 +14,6 @@
     <RepositoryType>Git</RepositoryType>
     <PackageTags>fiscalization hungary nav</PackageTags>
     <Description>Client for NAV - Online Szamla.</Description>
-    <PackageVersion>1.0.3</PackageVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   
