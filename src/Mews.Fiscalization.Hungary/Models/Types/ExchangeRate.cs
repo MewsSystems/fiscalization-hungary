@@ -1,27 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using Mews.Fiscalization.Hungary.Utils;
+using Mews.Fiscalization.Core.Model;
 
 namespace Mews.Fiscalization.Hungary.Models
 {
-    public sealed class ExchangeRate
+    public sealed class ExchangeRate : LimitedDecimal
     {
-        private static readonly int lowerBound = 0;
-        private static readonly int upperBound = 100_000_000;
-        private static readonly int maxPrecision  = 6;
+        private static readonly int MaxDecimalPlaces = 6;
+        private static readonly DecimalLimitation Limitation = new DecimalLimitation(min: 0, max: 100_000_000, maxDecimalPlaces: MaxDecimalPlaces, minIsAllowed: false, maxIsAllowed: false);
 
         public ExchangeRate(decimal value)
+            : base(value, Limitation)
         {
-            Check.Precision(value, maxPrecision: maxPrecision);
-            Check.InRange(value, lowerBound, upperBound, closed: false);
-            Value = value;
         }
-
-        public decimal Value { get; }
 
         public static ExchangeRate Rounded(decimal value)
         {
-            return new ExchangeRate(Decimal.Round(value, maxPrecision));
+            return new ExchangeRate(Decimal.Round(value, MaxDecimalPlaces));
         }
     }
 }

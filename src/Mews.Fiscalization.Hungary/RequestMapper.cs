@@ -1,4 +1,5 @@
-﻿using Mews.Fiscalization.Hungary.Models;
+﻿using Mews.Fiscalization.Core.Model;
+using Mews.Fiscalization.Hungary.Models;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -42,8 +43,8 @@ namespace Mews.Fiscalization.Hungary
 
         private static Dto.InvoiceType GetCommonInvoice(Invoice invoice, IEnumerable<Dto.LineType> lines, Dto.InvoiceReferenceType invoiceReference = null)
         {
-            var invoiceAmount = Amount.Sum(invoice.Items.Select(i => i.Item.TotalAmounts.Amount));
-            var invoiceAmountHUF = Amount.Sum(invoice.Items.Select(i => i.Item.TotalAmounts.AmountHUF));
+            var invoiceAmount = Amount.Sum(invoice.Items.Select(i => i.Value.TotalAmounts.Amount));
+            var invoiceAmountHUF = Amount.Sum(invoice.Items.Select(i => i.Value.TotalAmounts.AmountHUF));
             var supplierInfo = invoice.SupplierInfo;
             var customerInfo = invoice.CustomerInfo;
             return new Dto.InvoiceType
@@ -168,22 +169,22 @@ namespace Mews.Fiscalization.Hungary
             return items.Select(i => new Dto.LineType
             {
                 lineNumber = i.Index.ToString(),
-                lineDescription = i.Item.Description.Value,
-                quantity = i.Item.Quantity,
-                unitOfMeasureOwn = i.Item.MeasurementUnit.ToString(),
-                unitPrice = i.Item.UnitAmounts.Amount.Net.Value,
-                unitPriceHUF = i.Item.UnitAmounts.AmountHUF.Net.Value,
+                lineDescription = i.Value.Description.Value,
+                quantity = i.Value.Quantity,
+                unitOfMeasureOwn = i.Value.MeasurementUnit.ToString(),
+                unitPrice = i.Value.UnitAmounts.Amount.Net.Value,
+                unitPriceHUF = i.Value.UnitAmounts.AmountHUF.Net.Value,
                 quantitySpecified = true,
                 unitOfMeasureSpecified = true,
                 unitPriceSpecified = true,
                 unitPriceHUFSpecified = true,
-                depositIndicator = i.Item.IsDeposit,
-                Item = MapLineAmounts(i.Item),
+                depositIndicator = i.Value.IsDeposit,
+                Item = MapLineAmounts(i.Value),
                 aggregateInvoiceLineData = new Dto.AggregateInvoiceLineDataType
                 {
                     lineExchangeRateSpecified = true,
-                    lineExchangeRate = i.Item.ExchangeRate?.Value ?? 0m,
-                    lineDeliveryDate = i.Item.ConsumptionDate
+                    lineExchangeRate = i.Value.ExchangeRate?.Value ?? 0m,
+                    lineDeliveryDate = i.Value.ConsumptionDate
                 },
                 lineModificationReference = modificationIndexOffset.HasValue ? GetLineModificationReference(i, modificationIndexOffset.Value) : null
             });

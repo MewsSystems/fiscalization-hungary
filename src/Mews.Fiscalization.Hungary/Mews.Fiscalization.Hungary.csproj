@@ -15,6 +15,7 @@
   
   <ItemGroup>
     <PackageReference Include="BouncyCastle.NetCore" Version="1.8.6" />
+    <PackageReference Include="Mews.Fiscalization.Core" Version="2.0.0" />
   </ItemGroup>
 
   <ItemGroup>

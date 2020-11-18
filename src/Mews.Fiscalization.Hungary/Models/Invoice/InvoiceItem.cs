@@ -1,4 +1,4 @@
-﻿using Mews.Fiscalization.Hungary.Utils;
+﻿using Mews.Fiscalization.Core.Model;
 using System;
 
 namespace Mews.Fiscalization.Hungary.Models
@@ -16,10 +16,10 @@ namespace Mews.Fiscalization.Hungary.Models
             bool isDeposit = false)
         {
             ConsumptionDate = consumptionDate;
-            TotalAmounts = Check.NotNull(totalAmounts, nameof(totalAmounts));
-            UnitAmounts = Check.NotNull(unitAmounts, nameof(unitAmounts));
+            TotalAmounts = Check.IsNotNull(totalAmounts, nameof(totalAmounts));
+            UnitAmounts = Check.IsNotNull(unitAmounts, nameof(unitAmounts));
             MeasurementUnit = measurementUnit;
-            Description = Check.NotNull(description, nameof(description));
+            Description = Check.IsNotNull(description, nameof(description));
             Quantity = quantity;
             ExchangeRate = exchangeRate;
             IsDeposit = isDeposit;

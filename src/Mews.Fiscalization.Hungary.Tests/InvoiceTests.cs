@@ -1,4 +1,5 @@
-﻿using Mews.Fiscalization.Hungary.Models;
+﻿using Mews.Fiscalization.Core.Model;
+using Mews.Fiscalization.Hungary.Models;
 using NUnit.Framework;
 using System;
 using System.Threading;

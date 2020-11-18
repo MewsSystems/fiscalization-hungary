@@ -1,4 +1,4 @@
-﻿using Mews.Fiscalization.Hungary.Utils;
+﻿using Mews.Fiscalization.Core.Model;
 
 namespace Mews.Fiscalization.Hungary.Models
 {
@@ -7,7 +7,7 @@ namespace Mews.Fiscalization.Hungary.Models
         public SupplierInfo(TaxPayerId taxpayerId, Name name, SimpleAddress address, VatCode vatCode)
             : base(taxpayerId, name, address)
         {
-            VatCode = Check.NotNull(vatCode, nameof(vatCode));
+            VatCode = Check.IsNotNull(vatCode, nameof(vatCode));
         }
 
         public VatCode VatCode { get; }

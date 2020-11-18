@@ -1,17 +1,19 @@
-﻿namespace Mews.Fiscalization.Hungary.Models
+﻿using Mews.Fiscalization.Core.Model;
+
+namespace Mews.Fiscalization.Hungary.Models
 {
-    public sealed class EncryptionKey : ValidatedString
+    public sealed class EncryptionKey : LimitedString
     {
-        private static readonly string regexValidation = "^[0-9A-Za-z]{16}$";
+        private static readonly StringLimitation Limitation = new StringLimitation(pattern: "^[0-9A-Za-z]{16}$", allowEmptyOrWhiteSpace: false);
 
         public EncryptionKey(string value)
-            : base(value, 16, 16, regexValidation)
+            : base(value, Limitation)
         {
         }
 
         public static bool IsValid(string value)
         {
-            return IsValid(value, 16, 16, regexValidation);
+            return IsValid(value, Limitation);
         }
     }
 }

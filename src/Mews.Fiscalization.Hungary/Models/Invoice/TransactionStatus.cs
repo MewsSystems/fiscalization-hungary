@@ -1,5 +1,5 @@
+using Mews.Fiscalization.Core.Model;
 using System.Collections.Generic;
-using Mews.Fiscalization.Hungary.Utils;
 
 namespace Mews.Fiscalization.Hungary.Models
 {

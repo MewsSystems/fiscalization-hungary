@@ -1,4 +1,4 @@
-﻿using Mews.Fiscalization.Hungary.Utils;
+﻿using Mews.Fiscalization.Core.Model;
 
 namespace Mews.Fiscalization.Hungary.Models
 {
@@ -6,8 +6,8 @@ namespace Mews.Fiscalization.Hungary.Models
     {
         public ItemAmounts(Amount amount, Amount amountHUF, decimal? taxRatePercentage = null)
         {
-            Amount = Check.NotNull(amount, nameof(amount));
-            AmountHUF = Check.NotNull(amountHUF, nameof(amountHUF));
+            Amount = Check.IsNotNull(amount, nameof(amount));
+            AmountHUF = Check.IsNotNull(amountHUF, nameof(amountHUF));
             TaxRatePercentage = taxRatePercentage;
 
             if (taxRatePercentage.HasValue)

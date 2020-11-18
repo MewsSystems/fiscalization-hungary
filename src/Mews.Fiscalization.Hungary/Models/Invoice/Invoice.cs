@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Mews.Fiscalization.Hungary.Utils;
+using Mews.Fiscalization.Core.Model;
 
 namespace Mews.Fiscalization.Hungary.Models
 {
@@ -25,7 +25,7 @@ namespace Mews.Fiscalization.Hungary.Models
             CustomerInfo = customerInfo;
             CurrencyCode = currencyCode;
             Items = items;
-            DeliveryDate = Items.Max(i => i.Item.ConsumptionDate);
+            DeliveryDate = Items.Max(i => i.Value.ConsumptionDate);
             ExchangeRate = GetExchangeRate(items);
             TaxSummary = GetTaxSummary(items);
             IsSelfBilling = isSelfBilling;
@@ -60,8 +60,8 @@ namespace Mews.Fiscalization.Hungary.Models
 
         private ExchangeRate GetExchangeRate(ISequentialEnumerable<InvoiceItem> indexedItems)
         {
-            var totalGrossHuf = indexedItems.Items.Sum(i => Math.Abs(i.TotalAmounts.AmountHUF.Gross.Value));
-            var totalGross = indexedItems.Items.Sum(i => Math.Abs(i.TotalAmounts.Amount.Gross.Value));
+            var totalGrossHuf = indexedItems.Values.Sum(i => Math.Abs(i.TotalAmounts.AmountHUF.Gross.Value));
+            var totalGross = indexedItems.Values.Sum(i => Math.Abs(i.TotalAmounts.Amount.Gross.Value));
             if (totalGross != 0)
             {
                 return ExchangeRate.Rounded(totalGrossHuf / totalGross);
@@ -72,7 +72,7 @@ namespace Mews.Fiscalization.Hungary.Models
 
         private List<TaxSummaryItem> GetTaxSummary(ISequentialEnumerable<InvoiceItem> indexedItems)
         {
-            var itemsByTaxRate = indexedItems.Items.GroupBy(i => i.TotalAmounts.TaxRatePercentage);
+            var itemsByTaxRate = indexedItems.Values.GroupBy(i => i.TotalAmounts.TaxRatePercentage);
             var taxSummaryItems = itemsByTaxRate.Select(g => new TaxSummaryItem(
                 taxRatePercentage: g.Key,
                 amount: Amount.Sum(g.Select(i => i.TotalAmounts.Amount)),
@@ -84,7 +84,7 @@ namespace Mews.Fiscalization.Hungary.Models
         private static void CheckConsistency(Invoice invoice)
         {
             var nonDefaultCurrency = !invoice.CurrencyCode.Equals(TaxationInfo.DefaultCurrencyCode);
-            var hasRequiredTaxRates = nonDefaultCurrency.Implies(() => invoice.Items.All(i => i.Item.ExchangeRate != null));
+            var hasRequiredTaxRates = nonDefaultCurrency.Implies(() => invoice.Items.All(i => i.Value.ExchangeRate != null));
             if (!hasRequiredTaxRates)
             {
                 throw new InvalidOperationException("Exchange rate needs to be specified for all items.");

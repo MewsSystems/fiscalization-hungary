@@ -1,4 +1,4 @@
-﻿using Mews.Fiscalization.Hungary.Utils;
+﻿using Mews.Fiscalization.Core.Model;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -21,11 +21,11 @@ namespace Mews.Fiscalization.Hungary.Models
             IEnumerable<Dto.TechnicalValidationResultType> technicalValidations)
         {
             return Enumerable.Concat(
-                businessValidations.NullToEmpty().Select(v => new InvoiceValidationResult(
+                businessValidations.Defined().Select(v => new InvoiceValidationResult(
                     message: v.message,
                     resultCode: (ValidationResultCode)v.validationResultCode
                 )),
-                technicalValidations.NullToEmpty().Select(v => new InvoiceValidationResult(
+                technicalValidations.Defined().Select(v => new InvoiceValidationResult(
                     message: v.message,
                     resultCode: (ValidationResultCode)v.validationResultCode
                 ))

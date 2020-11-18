@@ -1,17 +1,19 @@
-﻿namespace Mews.Fiscalization.Hungary.Models
-{
-    public sealed class Region : ValidatedString
-    {
-        private static readonly string regexValidation = ".*[^\\s].*";
+﻿using Mews.Fiscalization.Core.Model;
 
-        public Region(string value)
-            : base(value, 1, 50, regexValidation, isNullable: true)
+namespace Mews.Fiscalization.Hungary.Models
+{
+    public sealed class Region : LimitedString
+    {
+        private static readonly StringLimitation Limitation = new StringLimitation(maxLength: 50, pattern: ".*[^\\s].*");
+
+        public Region(string value = "")
+            : base(value, Limitation)
         {
         }
 
         public static bool IsValid(string value)
         {
-            return IsValid(value, 1, 50, regexValidation, isNullable: true);
+            return IsValid(value, Limitation);
         }
     }
 }

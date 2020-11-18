@@ -1,17 +1,19 @@
-﻿namespace Mews.Fiscalization.Hungary.Models
+﻿using Mews.Fiscalization.Core.Model;
+
+namespace Mews.Fiscalization.Hungary.Models
 {
-    public sealed class CurrencyCode : ValidatedString
+    public sealed class CurrencyCode : LimitedString
     {
-        private static readonly string regexValidation = "[A-Z]{3}";
+        private static readonly StringLimitation Limitation = new StringLimitation(pattern: "[A-Z]{3}", allowEmptyOrWhiteSpace: false);
 
         public CurrencyCode(string value)
-            : base(value, 3, 3, regexValidation)
+            : base(value, Limitation)
         {
         }
 
         public static bool IsValid(string value)
         {
-            return IsValid(value, 3, 3, regexValidation);
+            return IsValid(value, Limitation);
         }
 
         public override bool Equals(object other)

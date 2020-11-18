@@ -1,3 +1,4 @@
+using Mews.Fiscalization.Core.Model;
 using System;
 
 namespace Mews.Fiscalization.Hungary.Models

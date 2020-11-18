@@ -1,4 +1,4 @@
-﻿using Mews.Fiscalization.Hungary.Utils;
+﻿using Mews.Fiscalization.Core.Model;
 
 namespace Mews.Fiscalization.Hungary.Models
 {
@@ -6,10 +6,10 @@ namespace Mews.Fiscalization.Hungary.Models
     {
         public SimpleAddress(City city, CountryCode countryCode, AdditionalAddressDetail additionalAddressDetail, PostalCode postalCode, Region region = null)
         {
-            City = Check.NotNull(city, nameof(city));
-            CountryCode = Check.NotNull(countryCode, nameof(countryCode));
-            AddtionalAddressDetail = Check.NotNull(additionalAddressDetail, nameof(additionalAddressDetail));
-            PostalCode = Check.NotNull(postalCode, nameof(postalCode));
+            City = Check.IsNotNull(city, nameof(city));
+            CountryCode = Check.IsNotNull(countryCode, nameof(countryCode));
+            AddtionalAddressDetail = Check.IsNotNull(additionalAddressDetail, nameof(additionalAddressDetail));
+            PostalCode = Check.IsNotNull(postalCode, nameof(postalCode));
             Region = region;
         }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Mews.Fiscalization.Core.Model;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Mews.Fiscalization.Hungary.Models
@@ -19,7 +20,7 @@ namespace Mews.Fiscalization.Hungary.Models
         {
             return new IndexedItem<InvoiceStatus>(
                 index: result.index,
-                item: new InvoiceStatus(
+                value: new InvoiceStatus(
                     status: (InvoiceState)result.invoiceStatus,
                     validationResults: InvoiceValidationResult.Map(result.businessValidationMessages, result.technicalValidationMessages).ToArray()
                 )

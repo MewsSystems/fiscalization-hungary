@@ -1,4 +1,5 @@
-﻿using Mews.Fiscalization.Hungary.Models;
+﻿using Mews.Fiscalization.Core.Model;
+using Mews.Fiscalization.Hungary.Models;
 using Mews.Fiscalization.Hungary.Utils;
 using System;
 using System.Linq;
@@ -42,7 +43,7 @@ namespace Mews.Fiscalization.Hungary
             var operations = invoices.Select(item => new Dto.InvoiceOperationType
             {
                 index = item.Index,
-                invoiceData = Encoding.UTF8.GetBytes(XmlManipulator.Serialize(mapper(item.Item))),
+                invoiceData = Encoding.UTF8.GetBytes(XmlManipulator.Serialize(mapper(item.Value))),
                 invoiceOperation = operation
             });
             var invoiceHashes = operations.Select(t => Sha512.GetSha3Hash($"{t.invoiceOperation}{Convert.ToBase64String(t.invoiceData)}"));

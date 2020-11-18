@@ -1,17 +1,19 @@
-﻿namespace Mews.Fiscalization.Hungary.Models
+﻿using Mews.Fiscalization.Core.Model;
+
+namespace Mews.Fiscalization.Hungary.Models
 {
-    public sealed class TaxPayerId : ValidatedString
+    public sealed class TaxPayerId : LimitedString
     {
-        private static readonly string regexValidation = "^[0-9]{8}$";
+        private static readonly StringLimitation Limitation = new StringLimitation(pattern: "^[0-9]{8}$", allowEmptyOrWhiteSpace: false);
 
         public TaxPayerId(string value)
-            :base(value, 8, 8, regexValidation)
+            : base(value, Limitation)
         {
         }
 
         public static bool IsValid(string value)
         {
-            return IsValid(value, 8, 8, regexValidation);
+            return IsValid(value, Limitation);
         }
     }
 }

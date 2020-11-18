@@ -1,17 +1,19 @@
-﻿namespace Mews.Fiscalization.Hungary.Models
+﻿using Mews.Fiscalization.Core.Model;
+
+namespace Mews.Fiscalization.Hungary.Models
 {
-    public sealed class AdditionalAddressDetail : ValidatedString
+    public sealed class AdditionalAddressDetail : LimitedString
     {
-        private static readonly string regexValidation = ".*[^\\s].*";
+        private static readonly StringLimitation Limitation = new StringLimitation(maxLength: 255, pattern: ".*[^\\s].*", allowEmptyOrWhiteSpace: false);
 
         public AdditionalAddressDetail(string value)
-            : base(value, 1, 255, regexValidation)
+            : base(value, Limitation)
         {
         }
 
         public static bool IsValid(string value)
         {
-            return IsValid(value, 1, 255, regexValidation);
+            return IsValid(value, Limitation);
         }
     }
 }

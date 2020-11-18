@@ -1,4 +1,4 @@
-using Mews.Fiscalization.Hungary.Utils;
+using Mews.Fiscalization.Core.Model;
 
 namespace Mews.Fiscalization.Hungary.Models
 {
@@ -6,12 +6,12 @@ namespace Mews.Fiscalization.Hungary.Models
     {
         public SoftwareIdentification(string id, string name, SoftwareType type, string mainVersion, string developerName, string developerContact, string developerCountry = null, string developerTaxNumber = null)
         {
-            Id = Check.NotNull(id, nameof(id));
-            Name = Check.NotNull(name, nameof(name));
+            Id = Check.IsNotNull(id, nameof(id));
+            Name = Check.IsNotNull(name, nameof(name));
             Type = type;
-            MainVersion = Check.NotNull(mainVersion, nameof(mainVersion));
-            DeveloperName = Check.NotNull(developerName, nameof(developerName));
-            DeveloperContact = Check.NotNull(developerContact, nameof(developerContact));
+            MainVersion = Check.IsNotNull(mainVersion, nameof(mainVersion));
+            DeveloperName = Check.IsNotNull(developerName, nameof(developerName));
+            DeveloperContact = Check.IsNotNull(developerContact, nameof(developerContact));
             DeveloperCountry = developerCountry;
             DeveloperTaxNumber = developerTaxNumber;
         }
