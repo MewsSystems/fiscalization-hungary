@@ -17,5 +17,10 @@ namespace Mews.Fiscalization.Hungary.Models
         {
             return new ExchangeRate(Decimal.Round(value, MaxDecimalPlaces));
         }
+
+        public static bool IsValid(decimal value)
+        {
+            return IsValid(value, Limitation);
+        }
     }
 }
