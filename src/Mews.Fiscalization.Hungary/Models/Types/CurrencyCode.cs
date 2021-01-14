@@ -24,6 +24,11 @@ namespace Mews.Fiscalization.Hungary.Models
             return base.GetHashCode();
         }
 
+        public static CurrencyCode HungarianForint()
+        {
+            return Create("HUF").GetUnsafe();
+        }
+
         public static ITry<CurrencyCode, INonEmptyEnumerable<Error>> Create(string value)
         {
             return StringValidations.NonEmptyNorWhitespace(value).FlatMap(v =>

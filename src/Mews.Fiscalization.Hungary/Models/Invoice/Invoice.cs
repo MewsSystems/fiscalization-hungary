@@ -64,7 +64,7 @@ namespace Mews.Fiscalization.Hungary.Models
             var totalGross = indexedItems.Values.Sum(i => Math.Abs(i.Value.TotalAmounts.Amount.Gross.Value));
             if (totalGross != 0)
             {
-                return ExchangeRate.Rounded(totalGrossHuf / totalGross);
+                return ExchangeRate.RoundedUnsafe(totalGrossHuf / totalGross);
             }
 
             return ExchangeRate.Create(1).Success.Get();

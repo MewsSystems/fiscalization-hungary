@@ -15,11 +15,7 @@ namespace Mews.Fiscalization.Hungary.Models
 
         public static ITry<InvoiceNumber, INonEmptyEnumerable<Error>> Create(string value)
         {
-            return StringValidations.LengthInRange(value, 1, 50).FlatMap(v =>
-            {
-                var validInvoiceNumber = StringValidations.RegexMatch(v, new Regex(".*[^\\s].*"));
-                return validInvoiceNumber.Map(n => new InvoiceNumber(n));
-            });
+            return ValidationExtensions.ValidateString(value, 1, 50, new Regex(".*[^\\s].*"), v => new InvoiceNumber(v));
         }
     }
 }

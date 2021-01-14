@@ -15,11 +15,7 @@ namespace Mews.Fiscalization.Hungary.Models
 
         public static ITry<Login, INonEmptyEnumerable<Error>> Create(string value)
         {
-            return StringValidations.LengthInRange(value, 1, 15).FlatMap(v =>
-            {
-                var validLogin = StringValidations.RegexMatch(v, new Regex("^[0-9A-Za-z]{15}$"));
-                return validLogin.Map(l => new Login(l));
-            });
+            return ValidationExtensions.ValidateString(value, 1, 15, new Regex("^[0-9A-Za-z]{15}$"), v => new Login(v));
         }
     }
 }

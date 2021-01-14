@@ -15,11 +15,7 @@ namespace Mews.Fiscalization.Hungary.Models
 
         public static ITry<City, INonEmptyEnumerable<Error>> Create(string value)
         {
-            return StringValidations.LengthInRange(value, 1, 255).FlatMap(v =>
-            {
-                var validCity = StringValidations.RegexMatch(v, new Regex(".*[^\\s].*"));
-                return validCity.Map(c => new City(c));
-            });
+            return ValidationExtensions.ValidateString(value, 1, 255, new Regex(".*[^\\s].*"), v => new City(v));
         }
     }
 }

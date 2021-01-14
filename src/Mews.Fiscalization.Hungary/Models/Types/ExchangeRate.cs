@@ -24,7 +24,7 @@ namespace Mews.Fiscalization.Hungary.Models
             });
         }
 
-        internal static ExchangeRate Rounded(decimal value)
+        internal static ExchangeRate RoundedUnsafe(decimal value)
         {
             var roundedValue = Decimal.Round(value, MaxDecimalPlaces);
             return Create(roundedValue).GetUnsafe();
