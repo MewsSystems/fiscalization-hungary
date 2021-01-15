@@ -10,8 +10,6 @@ namespace Mews.Fiscalization.Hungary.Tests
     [TestFixture]
     public class InvoiceTests
     {
-        private static readonly Country Hungary = Countries.Hungary;
-
         [Test]
         public async Task SendInvoiceSucceeds()
         {
@@ -130,7 +128,7 @@ namespace Mews.Fiscalization.Hungary.Tests
         private CustomerInfo GetCustomerInfo()
         {
             return new CustomerInfo(
-                taxpayerId: TaxpayerIdentificationNumber.Create(Hungary, "14750636").Success.Get(),
+                taxpayerId: TaxpayerIdentificationNumber.Create(Countries.Hungary, "14750636").Success.Get(),
                 name: Name.Create("Vev Kft").Success.Get(),
                 address: GetAddress()
             );
@@ -139,7 +137,7 @@ namespace Mews.Fiscalization.Hungary.Tests
         private SupplierInfo GetSupplierInfo()
         {
             return new SupplierInfo(
-                taxpayerId: TaxpayerIdentificationNumber.Create(Hungary, "14750636").Success.Get(),
+                taxpayerId: TaxpayerIdentificationNumber.Create(Countries.Hungary, "14750636").Success.Get(),
                 vatCode: VatCode.Create("2").Success.Get(),
                 name: Name.Create("BUDAPESTI MSZAKI S GAZDASGTUDOMNYI EGYETEM").Success.Get(),
                 address: GetAddress()
@@ -150,7 +148,7 @@ namespace Mews.Fiscalization.Hungary.Tests
         {
             return new SimpleAddress(
                 city: City.Create("Budapest").Success.Get(),
-                country: Hungary,
+                country: Countries.Hungary,
                 additionalAddressDetail: AdditionalAddressDetail.Create("Test").Success.Get(),
                 postalCode: PostalCode.Create("1111").Success.Get()
             );

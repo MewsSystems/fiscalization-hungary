@@ -1,19 +1,14 @@
 ﻿using FuncSharp;
 using Mews.Fiscalization.Core.Model;
-using System;
 using System.Text.RegularExpressions;
 
 namespace Mews.Fiscalization.Hungary.Models
 {
     internal static class ValidationExtensions
     {
-        internal static ITry<T, INonEmptyEnumerable<Error>> ValidateString<T>(string value, int min, int max, Regex regex, Func<string, T> mapper)
+        internal static ITry<string, INonEmptyEnumerable<Error>> ValidateString(string value, int minLength, int maxLength, string regex)
         {
-            return StringValidations.LengthInRange(value, min, max).FlatMap(v =>
-            {
-                var validatedValue = StringValidations.RegexMatch(v, regex);
-                return validatedValue.Map(d => mapper(d));
-            });
+            return StringValidations.LengthInRange(value, minLength, maxLength).FlatMap(v => StringValidations.RegexMatch(v, new Regex(regex)));
         }
     }
 }

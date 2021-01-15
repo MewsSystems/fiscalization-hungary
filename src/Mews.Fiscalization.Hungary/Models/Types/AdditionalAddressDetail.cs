@@ -1,6 +1,5 @@
 ﻿using FuncSharp;
 using Mews.Fiscalization.Core.Model;
-using System.Text.RegularExpressions;
 
 namespace Mews.Fiscalization.Hungary.Models
 {
@@ -15,7 +14,7 @@ namespace Mews.Fiscalization.Hungary.Models
 
         public static ITry<AdditionalAddressDetail, INonEmptyEnumerable<Error>> Create(string value)
         {
-            return ValidationExtensions.ValidateString(value, 1, 255, new Regex(".*[^\\s].*"), v => new AdditionalAddressDetail(v));
+            return ValidationExtensions.ValidateString(value, 1, 255, ".*[^\\s].*").Map(v => new AdditionalAddressDetail(v));
         }
     }
 }
