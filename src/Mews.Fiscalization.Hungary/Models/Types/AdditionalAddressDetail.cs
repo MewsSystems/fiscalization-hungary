@@ -14,7 +14,7 @@ namespace Mews.Fiscalization.Hungary.Models
 
         public static ITry<AdditionalAddressDetail, INonEmptyEnumerable<Error>> Create(string value)
         {
-            return ValidationExtensions.ValidateString(value, 1, 255, ".*[^\\s].*").Map(v => new AdditionalAddressDetail(v));
+            return ValidationExtensions.ValidateString(value, minLength: 1, maxLength: 255, regex: ".*[^\\s].*").Map(v => new AdditionalAddressDetail(v));
         }
     }
 }
